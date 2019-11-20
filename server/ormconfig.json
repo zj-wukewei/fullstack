@@ -1,0 +1,10 @@
+{
+  "type": "mysql",
+  "host": "192.168.3.19",
+  "port": 3306,
+  "username": "root",
+  "password": "Vongi..2017",
+  "database": "share",
+  "entities": ["dist/**/*.entity{.ts,.js}"],
+  "synchronize": true
+}
