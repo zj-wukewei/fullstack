@@ -2,6 +2,7 @@ import { ParseIntPipe, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { User } from '../graphql.schema';
+import { User as UserEntity } from './users.entity';
 import { UsersGuard } from './users.guard';
 import { UsersService } from './users.service';
 
@@ -13,7 +14,7 @@ export class UsersResolvers {
 
   @Query()
   @UseGuards(UsersGuard)
-  async getUsers() {
+  async getUsers(): Promise<User[]> {
     return await this.usersService.findAll();
   }
 
@@ -26,8 +27,13 @@ export class UsersResolvers {
   }
 
   @Mutation('createUser')
-  async create(@Args('createUserInput') args: User): Promise<User> {
-    const createdUser = await this.usersService.create(args);
+  async create(@Args('createUserInput') args: User): Promise<UserEntity> {
+    const { phone, appModel, appType } = args;
+    const userEntity = new UserEntity();
+    userEntity.phone = phone;
+    userEntity.appModel = appModel;
+    userEntity.appType = appType;
+    const createdUser = await this.usersService.create(userEntity);
     pubSub.publish('userCreated', { userCreated: createdUser });
     return createdUser;
   }

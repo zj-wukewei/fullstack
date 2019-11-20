@@ -1,18 +1,16 @@
-import { Column, Entity, PrimaryGeneratedColumn, Table } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity("share_user")
+@Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('phone')
+  @Column('varchar')
   phone: string;
 
-  @Column('app_type')
-  appType: string
- 
-  @Column('app_model')
-  appModel: string
+  @Column('varchar')
+  appType: string;
 
-
+  @Column('varchar')
+  appModel: string;
 }

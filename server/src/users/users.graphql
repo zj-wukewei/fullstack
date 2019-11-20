@@ -13,11 +13,13 @@ type Subscription {
 
 type User {
   id: Int
-  name: String
-  age: Int
+  phone: String
+  appType: String
+  appModel: String
 }
 
 input CreateUserInput {
-  name: String
-  age: Int
+  phone: String
+  appType: String
+  appModel: String
 }
