@@ -5,6 +5,8 @@ import { User } from './users.entity';
 import { UsersGuard } from './users.guard';
 import { UsersService } from './users.service';
 
+import { DeepPartialTransform } from '../pipeTransform/DeepPartialTransform';
+
 const pubSub = new PubSub();
 
 @Resolver('User')
@@ -26,9 +28,7 @@ export class UsersResolvers {
   }
 
   @Mutation('createUser')
-  async create(@Args('createUserInput') args: User): Promise<User> {
-    const user = new User();
-    Object.assign(user, args);
+  async create(@Args({ name: 'createUserInput', type: () => new User() }, DeepPartialTransform) user: User): Promise<User> {
     const createdUser = await this.usersService.create(user);
     pubSub.publish('userCreated', { userCreated: createdUser });
     return createdUser;
