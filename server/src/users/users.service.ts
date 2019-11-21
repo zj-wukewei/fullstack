@@ -1,20 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { User as UserEntity } from './users.entity';
-import { CustomUserRepository } from './users.repository';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from './users.entity';
+import { Repository, DeepPartial } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly userRepository: CustomUserRepository) {}
+  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
 
-  async create(user: UserEntity): Promise<UserEntity> {
+  async create(user: DeepPartial<User>): Promise<User> {
     return await this.userRepository.save(user);
   }
 
-  async findAll(): Promise<UserEntity[]> {
+  async findAll(): Promise<User[]> {
     return await this.userRepository.find();
   }
 
-  async findOneById(id: number): Promise<UserEntity> {
+  async findOneById(id: number): Promise<User> {
     return await this.userRepository.findOne(id);
   }
 }
