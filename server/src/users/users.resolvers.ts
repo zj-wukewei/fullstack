@@ -2,8 +2,8 @@ import { ParseIntPipe, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { User } from './users.entity';
-import { UsersGuard } from './users.guard';
 import { UsersService } from './users.service';
+import { GqlAuthGuard } from '../auth/gql.auth.guard';
 
 import { DeepPartialTransform } from '../pipeTransform/DeepPartialTransform';
 
@@ -14,7 +14,7 @@ export class UsersResolvers {
   constructor(private readonly usersService: UsersService) {}
 
   @Query()
-  @UseGuards(UsersGuard)
+  @UseGuards(GqlAuthGuard)
   async getUsers(): Promise<User[]> {
     return await this.usersService.findAll();
   }

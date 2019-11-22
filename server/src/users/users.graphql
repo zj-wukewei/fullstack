@@ -1,6 +1,7 @@
 type Query {
   getUsers: [User]
   user(id: ID!): User
+  login(user: LoginArgs): LoginResult
 }
 
 type Mutation {
@@ -11,15 +12,20 @@ type Subscription {
   userCreated: User
 }
 
+input LoginArgs {
+  phone: String
+  password: String
+}
+
+type LoginResult {
+  access_token: String
+}
+
 type User {
   id: Int
   phone: String
-  appType: String
-  appModel: String
 }
 
 input CreateUserInput {
   phone: String
-  appType: String
-  appModel: String
 }

@@ -6,12 +6,12 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('varchar')
+  @Column()
   phone: string;
 
-  @Column('varchar')
-  appType: string;
+  @Column()
+  password: string;
 
-  @Column('varchar')
-  appModel: string;
+  @Column()
+  createDate: Date;
 }

@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './users.entity';
-import { Repository, DeepPartial } from 'typeorm';
+import { DeepPartial } from 'typeorm';
+import { CustomUserRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
+  constructor(private readonly userRepository: CustomUserRepository) {}
 
   async create(user: DeepPartial<User>): Promise<User> {
     return await this.userRepository.save(user);
@@ -17,5 +17,9 @@ export class UsersService {
 
   async findOneById(id: number): Promise<User> {
     return await this.userRepository.findOne(id);
+  }
+
+  async findOneByPhone(phone: string): Promise<User> {
+    return await this.userRepository.findOneByPhone(phone);
   }
 }

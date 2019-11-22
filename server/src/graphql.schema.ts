@@ -7,8 +7,15 @@
 /* tslint:disable */
 export class CreateUserInput {
     phone?: string;
-    appType?: string;
-    appModel?: string;
+}
+
+export class LoginArgs {
+    phone?: string;
+    password?: string;
+}
+
+export class LoginResult {
+    access_token?: string;
 }
 
 export abstract class IMutation {
@@ -19,6 +26,8 @@ export abstract class IQuery {
     abstract getUsers(): User[] | Promise<User[]>;
 
     abstract user(id: string): User | Promise<User>;
+
+    abstract login(user?: LoginArgs): LoginResult | Promise<LoginResult>;
 }
 
 export abstract class ISubscription {
@@ -28,6 +37,4 @@ export abstract class ISubscription {
 export class User {
     id?: number;
     phone?: string;
-    appType?: string;
-    appModel?: string;
 }
