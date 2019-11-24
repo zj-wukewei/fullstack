@@ -7,7 +7,8 @@ import { AppResolvers } from './app.resolvers';
 
 @Module({
   imports: [
-    UsersModule, AuthModule,
+    UsersModule,
+    AuthModule,
     TypeOrmModule.forRoot(),
     GraphQLModule.forRoot({
       context: ({ req }) => ({ req }),
@@ -15,6 +16,6 @@ import { AppResolvers } from './app.resolvers';
       installSubscriptionHandlers: true,
     }),
   ],
-  providers: [AppResolvers]
+  providers: [AppResolvers],
 })
 export class AppModule {}

@@ -5,10 +5,9 @@ import { UsersResolvers } from './users.resolvers';
 import { UsersService } from './users.service';
 import { CustomUserRepository } from './users.repository';
 
-
 @Module({
   imports: [TypeOrmModule.forFeature([CustomUserRepository])],
   providers: [UsersService, UsersResolvers],
-  exports: [UsersService]
+  exports: [UsersService],
 })
 export class UsersModule {}

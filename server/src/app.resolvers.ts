@@ -1,7 +1,7 @@
-import { UseGuards, UnauthorizedException  } from '@nestjs/common';
+import { UseGuards, UnauthorizedException } from '@nestjs/common';
 import { Resolver, Query, Args } from '@nestjs/graphql';
 import { AuthService } from './auth/auth.service';
-import { LoginArgs } from './graphql.schema'
+import { LoginArgs } from './graphql.schema';
 
 @Resolver('app')
 export class AppResolvers {

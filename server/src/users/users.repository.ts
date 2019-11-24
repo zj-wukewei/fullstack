@@ -3,9 +3,7 @@ import { User } from './users.entity';
 
 @EntityRepository(User)
 export class CustomUserRepository extends Repository<User> {
-
-    findOneByPhone(phone: string) {
-      return this.findOne({ phone: phone })
-    }
-
+  findOneByPhone(phone: string) {
+    return this.findOne({ phone });
+  }
 }
