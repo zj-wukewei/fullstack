@@ -10,7 +10,7 @@ export class AppResolvers {
 
   @Query(returns => Auth)
   @UseGuards()
-  async login(@Args('loginArgs') loginArgs: LoginArgs): Promise<Auth> {
+  async login(@Args() loginArgs: LoginArgs): Promise<Auth> {
     const user = await this.authService.validateUser(loginArgs.phone, loginArgs.password);
     if (!user) {
       throw new UnauthorizedException();

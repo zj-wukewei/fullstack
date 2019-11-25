@@ -1,12 +1,12 @@
 import { IsMobilePhone } from 'class-validator';
-import { ArgsType,InputType, Field } from 'type-graphql';
+import { ArgsType, Field } from 'type-graphql';
 
-@InputType()
+@ArgsType()
 export class LoginArgs {
-    @Field(type => String)
-    @IsMobilePhone('zh-CN')
-    phone: string
+  @Field(type => String)
+  @IsMobilePhone('zh-CN')
+  phone: string;
 
-    @Field(type => String)
-    password: string
+  @Field(type => String)
+  password: string;
 }

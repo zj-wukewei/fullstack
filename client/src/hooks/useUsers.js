@@ -3,7 +3,7 @@ import useSWR from '@zeit/swr';
 export default function () {
     return useSWR(
         `{
-          getUsers {
+          users {
             id,
             phone,
             createDate

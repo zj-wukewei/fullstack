@@ -21,7 +21,12 @@ import { UnauthorizedExceptionFilter } from './filter/UnauthorizedExceptionFilte
     }),
   ],
   providers: [
-   
-    AppResolvers, DateScalar],
+    {
+      provide: APP_FILTER,
+      useClass: UnauthorizedExceptionFilter,
+    },
+    AppResolvers,
+    DateScalar,
+  ],
 })
 export class AppModule {}

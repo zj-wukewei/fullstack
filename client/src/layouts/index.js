@@ -1,6 +1,6 @@
 import { SWRConfig } from '@zeit/swr';
 import { GraphQLClient  } from 'graphql-request';
-
+import router from 'umi/router';
 import { message } from 'antd';
 
 const API = 'http://localhost:3000/graphql';
@@ -19,7 +19,14 @@ function BasicLayout(props) {
         fetcher: (...args) => graphQLClient.request(...args),
         shouldRetryOnError: false,
         onError: (err) => {
-          message.error(err.message)
+          if (err.response && err.response.errors) {
+            const { error, statusCode } = err.response.errors[0].message;
+            if (statusCode === 401) {
+              router.push('/login');
+            }
+            message.error(error);
+          }
+         
         }
       }}>
       {props.children}

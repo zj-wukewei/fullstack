@@ -4,19 +4,14 @@
 # -----------------------------------------------
 
 type Auth {
-  access_token: String!
+  accessToken: String!
 }
 
 """Date custom scalar type"""
 scalar Date
 
-input LoginArgs {
-  phone: String!
-  password: String!
-}
-
 type Mutation {
-  create(newUserData: NewUserInput!): User!
+  addUser(newUserData: NewUserInput!): User!
 }
 
 input NewUserInput {
@@ -24,9 +19,9 @@ input NewUserInput {
 }
 
 type Query {
-  users: User!
-  user(id: Float!): [User!]!
-  login(loginArgs: LoginArgs!): Auth!
+  users: [User!]!
+  user(id: Float!): User!
+  login(phone: String!, password: String!): Auth!
 }
 
 type Subscription {

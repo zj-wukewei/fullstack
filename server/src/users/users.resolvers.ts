@@ -15,26 +15,27 @@ const pubSub = new PubSub();
 export class UsersResolvers {
   constructor(private readonly usersService: UsersService) {}
 
-  @Query(returns => User)
+  @Query(returns => [User])
   @UseGuards(GqlAuthGuard)
   async users(): Promise<User[]> {
-    const users: UserEntity[] = await this.usersService.findAll();
-    return users.map(item => Object.assign(new User(), item)) ;
+    return await this.usersService.findAll();
   }
 
-  @Query(returns => [User])
+  @Query(returns => User)
   async user(
     @Args('id', ParseIntPipe)
     id: number,
-  ): Promise<User> {
-    const user = await this.usersService.findOneById(id);
-    return Object.assign(new User, user);
+  ): Promise<UserEntity> {
+    return await this.usersService.findOneById(id);
   }
 
   @Mutation(returns => User)
-  async create(@Args('newUserData') newUserData: NewUserInput): Promise<User> {
-    const createdUserEntity: UserEntity = await this.usersService.create(newUserData);
-    const createdUser =  Object.assign(new User, createdUserEntity)
+  async addUser(@Args('newUserData') newUserData: NewUserInput): Promise<UserEntity> {
+    const userEntity = new UserEntity();
+    userEntity.phone = newUserData.phone;
+    userEntity.password = '123456';
+    userEntity.createDate = new Date();
+    const createdUser = await this.usersService.create(userEntity);
     pubSub.publish('userCreated', { userCreated: createdUser });
     return createdUser;
   }
