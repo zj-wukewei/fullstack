@@ -37,4 +37,5 @@ export abstract class ISubscription {
 export class User {
     id?: number;
     phone?: string;
+    createDate?: Date;
 }

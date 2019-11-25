@@ -12,6 +12,6 @@ export class User {
   @Column()
   password: string;
 
-  @Column()
+  @Column('datetime')
   createDate: Date;
 }

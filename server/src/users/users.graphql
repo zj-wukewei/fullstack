@@ -1,3 +1,5 @@
+scalar Date
+
 type Query {
   getUsers: [User]
   user(id: ID!): User
@@ -24,6 +26,7 @@ type LoginResult {
 type User {
   id: Int
   phone: String
+  createDate: Date
 }
 
 input CreateUserInput {

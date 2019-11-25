@@ -6,8 +6,7 @@ export default function () {
           getUsers {
             id,
             phone,
-            appType,
-            appModel
+            createDate
           }
         }`
       );
