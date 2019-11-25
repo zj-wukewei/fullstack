@@ -16,7 +16,7 @@ import { UnauthorizedExceptionFilter } from './filter/UnauthorizedExceptionFilte
     TypeOrmModule.forRoot(),
     GraphQLModule.forRoot({
       context: ({ req }) => ({ req }),
-      typePaths: ['./**/*.graphql'],
+      autoSchemaFile: 'schema.gql',
       installSubscriptionHandlers: true,
     }),
   ],

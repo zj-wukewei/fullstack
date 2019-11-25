@@ -1,16 +1,17 @@
 import { UseGuards, UnauthorizedException } from '@nestjs/common';
 import { Resolver, Query, Args } from '@nestjs/graphql';
 import { AuthService } from './auth/auth.service';
-import { LoginArgs } from './graphql.schema';
+import { LoginArgs } from './auth/dto/auth.args';
+import { Auth } from './auth/models/auth';
 
 @Resolver('app')
 export class AppResolvers {
   constructor(private readonly authService: AuthService) {}
 
-  @Query()
+  @Query(returns => Auth)
   @UseGuards()
-  async login(@Args('user') args: LoginArgs) {
-    const user = await this.authService.validateUser(args.phone, args.password);
+  async login(@Args('loginArgs') loginArgs: LoginArgs): Promise<Auth> {
+    const user = await this.authService.validateUser(loginArgs.phone, loginArgs.password);
     if (!user) {
       throw new UnauthorizedException();
     }

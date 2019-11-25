@@ -1,7 +1,9 @@
 import { ParseIntPipe, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
-import { User } from './users.entity';
+import { User } from './models/user';
+import { User as UserEntity } from './users.entity';
+import { NewUserInput } from './dto/new-user.input';
 import { UsersService } from './users.service';
 import { GqlAuthGuard } from '../auth/gql.auth.guard';
 
@@ -9,32 +11,35 @@ import { DeepPartialTransform } from '../pipeTransform/DeepPartialTransform';
 
 const pubSub = new PubSub();
 
-@Resolver('User')
+@Resolver(of => User)
 export class UsersResolvers {
   constructor(private readonly usersService: UsersService) {}
 
-  @Query()
+  @Query(returns => User)
   @UseGuards(GqlAuthGuard)
-  async getUsers(): Promise<User[]> {
-    return await this.usersService.findAll();
+  async users(): Promise<User[]> {
+    const users: UserEntity[] = await this.usersService.findAll();
+    return users.map(item => Object.assign(new User(), item)) ;
   }
 
-  @Query('user')
-  async findOneById(
+  @Query(returns => [User])
+  async user(
     @Args('id', ParseIntPipe)
     id: number,
   ): Promise<User> {
-    return await this.usersService.findOneById(id);
+    const user = await this.usersService.findOneById(id);
+    return Object.assign(new User, user);
   }
 
-  @Mutation('createUser')
-  async create(@Args({ name: 'createUserInput', type: () => new User() }, DeepPartialTransform) user: User): Promise<User> {
-    const createdUser = await this.usersService.create(user);
+  @Mutation(returns => User)
+  async create(@Args('newUserData') newUserData: NewUserInput): Promise<User> {
+    const createdUserEntity: UserEntity = await this.usersService.create(newUserData);
+    const createdUser =  Object.assign(new User, createdUserEntity)
     pubSub.publish('userCreated', { userCreated: createdUser });
     return createdUser;
   }
 
-  @Subscription('userCreated')
+  @Subscription(returns => User)
   userCreated() {
     return pubSub.asyncIterator('userCreated');
   }

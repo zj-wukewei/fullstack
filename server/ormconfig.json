@@ -3,7 +3,7 @@
   "host": "192.168.3.19",
   "port": 3306,
   "username": "root",
-  "password": "**",
+  "password": "Vongi..2017",
   "database": "nest_test",
   "entities": ["dist/**/*.entity{.ts,.js}"],
   "synchronize": true
