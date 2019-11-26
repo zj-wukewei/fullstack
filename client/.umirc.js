@@ -2,13 +2,19 @@
 // ref: https://umijs.org/config/
 export default {
   treeShaking: true,
+  cssLoaderOptions: {
+    localIdentName: '[local]',
+  },
   routes: [
     {
       path: '/',
-      component: '../layouts/index',
+      component: './index',
       routes: [
-        { path: '/', component: '../pages/index' },
-        { path: '/login', component: '../pages/login' }
+        { path: '/login', component: '../pages/login/index' },
+        { path: '/*', component: '../layouts', routes: [
+          { path: '/users', component: './users/index', exact: true },
+          ] 
+        },
       ]
     }
   ],

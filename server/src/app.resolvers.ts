@@ -1,4 +1,4 @@
-import { UseGuards, UnauthorizedException } from '@nestjs/common';
+import { UseGuards, NotFoundException } from '@nestjs/common';
 import { Resolver, Query, Args } from '@nestjs/graphql';
 import { AuthService } from './auth/auth.service';
 import { LoginArgs } from './auth/dto/auth.args';
@@ -13,7 +13,7 @@ export class AppResolvers {
   async login(@Args() loginArgs: LoginArgs): Promise<Auth> {
     const user = await this.authService.validateUser(loginArgs.phone, loginArgs.password);
     if (!user) {
-      throw new UnauthorizedException();
+      throw new NotFoundException();
     }
     return await this.authService.login(user);
   }
