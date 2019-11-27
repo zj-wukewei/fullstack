@@ -1,5 +1,5 @@
 import { UseGuards, NotFoundException } from '@nestjs/common';
-import { Resolver, Query, Args } from '@nestjs/graphql';
+import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 import { AuthService } from './auth/auth.service';
 import { LoginArgs } from './auth/dto/auth.args';
 import { Auth } from './auth/models/auth';
@@ -8,7 +8,7 @@ import { Auth } from './auth/models/auth';
 export class AppResolvers {
   constructor(private readonly authService: AuthService) {}
 
-  @Query(returns => Auth)
+  @Mutation(returns => Auth)
   @UseGuards()
   async login(@Args() loginArgs: LoginArgs): Promise<Auth> {
     const user = await this.authService.validateUser(loginArgs.phone, loginArgs.password);

@@ -8,8 +8,9 @@ export default {
   routes: [
     {
       path: '/',
-      component: './index',
+      component: '../app',
       routes: [
+        { path: "/", component: "./index" },
         { path: '/login', component: '../pages/login/index' },
         { path: '/*', component: '../layouts', routes: [
           { path: '/users', component: './users/index', exact: true },

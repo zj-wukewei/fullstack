@@ -1,13 +1,20 @@
 import React from 'react';
+import Redirect from 'umi/redirect';
+import { useQuery  } from '@apollo/react-hooks';
 
-import { ApolloProvider } from '@apollo/react-hooks';
-import { client } from '../utils/apollo';
+import gql from 'graphql-tag';
+
+const IS_LOGGED_IN = gql`
+  query IsUserLoggedIn {
+    isLoggedIn @client
+  }
+`;
 
 function BasicAppLayout(props) {
+  const { data } = useQuery(IS_LOGGED_IN);
+  const redirect = data.isLoggedIn ? '/users' : '/login';
   return (
-    <ApolloProvider client={client}>
-      {props.children}
-    </ApolloProvider>
+    <Redirect to={redirect} {...props} />
   );
 }
 

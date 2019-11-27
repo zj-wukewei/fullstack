@@ -4,8 +4,15 @@ import { setContext } from 'apollo-link-context';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { onError } from "apollo-link-error";
 import router from 'umi/router';
+import gql from 'graphql-tag';
 
 const cache = new InMemoryCache();
+
+cache.writeData({
+  data: {
+    isLoggedIn: !!localStorage.getItem('token')
+  }
+})
 
 const httpLink = createHttpLink({
     uri: "http://localhost:3000/graphql",
@@ -15,10 +22,11 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.forEach(({ message, locations, path }) => {
       if (message instanceof Array) {
-
+        
       } else {
         const { statusCode } = message;
         if (statusCode === 401) {
+          loginOut();
           router.push('/login');
         }
         return;
@@ -41,13 +49,29 @@ const authLink = setContext((_, { headers }) => {
     }
   });
 
+export const typeDefs = gql`
+  extend type Query {
+    isLoggedIn: Boolean!
+  }
+`; 
+
 const client = new ApolloClient({
     link: errorLink.concat(authLink).concat(httpLink),
-    cache
+    cache,
+    resolvers: {},
+    typeDefs: typeDefs
 });
 
-const setToken = (token) => {
-    localStorage.setItem('token', token);
+const loginOut = () => {
+  localStorage.setItem('token', "");
+  cache.writeData({ data: { isLoggedIn: false }});
 }
 
-export { client, setToken };
+const loginIn = (token) => {
+    localStorage.setItem('token', token);
+    client.writeData({ data: { isLoggedIn: true } });
+}
+
+
+
+export { client, loginIn };

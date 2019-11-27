@@ -6,7 +6,8 @@ import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 
 const EXCHANGE_USERS = gql`
-  {
+  query Users  {
+    isLoggedIn @client
     users {
       id
       phone
@@ -17,9 +18,7 @@ const EXCHANGE_USERS = gql`
 
 
 export default function() {
-
   const { loading, data } = useQuery(EXCHANGE_USERS);
-  console.log('data', data)
   const columns = [
     {
       title: 'id',

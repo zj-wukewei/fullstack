@@ -12,6 +12,7 @@ scalar Date
 
 type Mutation {
   addUser(newUserData: NewUserInput!): User!
+  login(phone: String!, password: String!): Auth!
 }
 
 input NewUserInput {
@@ -21,7 +22,6 @@ input NewUserInput {
 type Query {
   users: [User!]!
   user(id: Float!): User!
-  login(phone: String!, password: String!): Auth!
 }
 
 type Subscription {
