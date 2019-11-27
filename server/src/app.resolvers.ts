@@ -3,6 +3,7 @@ import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 import { AuthService } from './auth/auth.service';
 import { LoginArgs } from './auth/dto/auth.args';
 import { Auth } from './auth/models/auth';
+import { UserNotFoundException } from './common/exception/UserNotFoundException';
 
 @Resolver('app')
 export class AppResolvers {
@@ -13,7 +14,7 @@ export class AppResolvers {
   async login(@Args() loginArgs: LoginArgs): Promise<Auth> {
     const user = await this.authService.validateUser(loginArgs.phone, loginArgs.password);
     if (!user) {
-      throw new NotFoundException();
+      throw new UserNotFoundException();
     }
     return await this.authService.login(user);
   }

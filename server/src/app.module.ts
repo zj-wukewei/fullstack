@@ -7,7 +7,8 @@ import { AuthModule } from './auth/auth.module';
 import { AppResolvers } from './app.resolvers';
 import { DateScalar } from './common/scalars/data.scalar';
 
-import { UnauthorizedExceptionFilter } from './filter/UnauthorizedExceptionFilter';
+import UnauthorizedExceptionFilter from './filter/unauthorizd-exception-filter';
+import UserNotFoundExceptionFilter from './filter/user-not-found-exception-filter';
 
 @Module({
   imports: [
@@ -24,6 +25,10 @@ import { UnauthorizedExceptionFilter } from './filter/UnauthorizedExceptionFilte
     {
       provide: APP_FILTER,
       useClass: UnauthorizedExceptionFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: UserNotFoundExceptionFilter,
     },
     AppResolvers,
     DateScalar,
