@@ -21,19 +21,12 @@ const httpLink = createHttpLink({
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
-    graphQLErrors.forEach(({ message, locations, path }) => {
-      if (message instanceof Array) {
-        
-      } else {
-        const { statusCode } = message;
-        if (statusCode === 401) {
-          loginOut();
-          antdMessage.error('登录失效!');
-          router.push('/login');
-        }
-        return;
-      }
-    });
+    const message = graphQLErrors[0].message;
+    if (message === '身份信息已过期，请重新登录') {
+      antdMessage.info(message, 3, () => router.push('/login'));
+    } else {
+      antdMessage.error(message);
+    }
   }
 
   if (networkError) console.log(`[Network error]: ${networkError}`);
