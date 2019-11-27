@@ -58,7 +58,7 @@ const LoginForm = props => {
         {
           props.error && (
           <div className="error">{props.error.graphQLErrors[0] && 
-            props.error.graphQLErrors[0].message && props.error.graphQLErrors[0].message.error || "发生了一个错误"}</div>
+            props.error.graphQLErrors[0].message && props.error.graphQLErrors[0].message || "发生了一个错误"}</div>
           )
         }
 
