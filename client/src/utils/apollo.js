@@ -21,8 +21,8 @@ const httpLink = createHttpLink({
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
-    const message = graphQLErrors[0].message;
-    if (message === '身份信息已过期，请重新登录') {
+    const { message = "未知错误", statusCode } = graphQLErrors[0].message || {};
+    if (statusCode === 401) {
       antdMessage.info(message, 3, () => router.push('/login'));
     } else {
       antdMessage.error(message);

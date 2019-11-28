@@ -31,5 +31,14 @@ type Subscription {
 type User {
   id: ID!
   phone: String!
+  info: UserInfo
+  createDate: Date!
+}
+
+type UserInfo {
+  id: ID!
+  name: String!
+  address: String!
+  age: Float!
   createDate: Date!
 }

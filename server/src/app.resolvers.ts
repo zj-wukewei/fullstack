@@ -1,9 +1,9 @@
-import { UseGuards, NotFoundException } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 import { AuthService } from './auth/auth.service';
 import { LoginArgs } from './auth/dto/auth.args';
 import { Auth } from './auth/models/auth';
-import { UserNotFoundException } from './common/exception/UserNotFoundException';
+import { UserNotFoundException } from './common/exception/user-notfound-exception';
 
 @Resolver('app')
 export class AppResolvers {

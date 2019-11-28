@@ -2,7 +2,7 @@ import { ParseIntPipe, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { User } from './models/user';
-import { User as UserEntity } from './users.entity';
+import { User as UserEntity } from './entity/users.entity';
 import { NewUserInput } from './dto/new-user.input';
 import { UsersService } from './users.service';
 import { GqlAuthGuard } from '../auth/gql.auth.guard';

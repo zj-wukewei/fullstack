@@ -24,10 +24,7 @@ const LoginForm = props => {
       <Form onSubmit={handleSubmit} className="login-form">
         <Form.Item>
           {getFieldDecorator('phone', {
-            rules: [{ required: true, message: '请输入手机号码!' }, {
-              message:'手机号码格式不正确！',
-              pattern: /^1([38]\d|5[0-35-9]|7[3678])\d{8}$/
-          }],
+            rules: [{ required: true, message: '请输入手机号码!' }],
           })(
             <Input
               prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -58,7 +55,7 @@ const LoginForm = props => {
         {
           props.error && (
           <div className="error">{props.error.graphQLErrors[0] && 
-            props.error.graphQLErrors[0].message && props.error.graphQLErrors[0].message || "发生了一个错误"}</div>
+            props.error.graphQLErrors[0].message && props.error.graphQLErrors[0].message.message || "未知错误"}</div>
           )
         }
 

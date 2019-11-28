@@ -1,4 +1,4 @@
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -7,8 +7,8 @@ import { AuthModule } from './auth/auth.module';
 import { AppResolvers } from './app.resolvers';
 import { DateScalar } from './common/scalars/data.scalar';
 
-import UnauthorizedExceptionFilter from './filter/unauthorizd-exception-filter';
-import UserNotFoundExceptionFilter from './filter/user-not-found-exception-filter';
+import UnauthorizedExceptionFilter from './common/filter/unauthorizd-exception-filter';
+
 
 @Module({
   imports: [
@@ -25,10 +25,6 @@ import UserNotFoundExceptionFilter from './filter/user-not-found-exception-filte
     {
       provide: APP_FILTER,
       useClass: UnauthorizedExceptionFilter,
-    },
-    {
-      provide: APP_FILTER,
-      useClass: UserNotFoundExceptionFilter,
     },
     AppResolvers,
     DateScalar,

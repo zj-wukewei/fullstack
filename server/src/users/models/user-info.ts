@@ -1,18 +1,19 @@
 import { Field, ID, ObjectType } from 'type-graphql';
-import { UserInfo } from './user-info';
 
 @ObjectType()
-export class User {
+export class UserInfo {
   @Field(type => ID)
   id: number;
 
   @Field()
-  phone: string;
+  name: string;
 
-  @Field(type => UserInfo, { nullable: true })
-  info: UserInfo;
+  @Field()
+  address: string;
+
+  @Field()
+  age: number;
 
   @Field(type => Date)
   createDate: Date;
-
 }
