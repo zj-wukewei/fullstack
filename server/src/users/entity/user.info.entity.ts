@@ -1,10 +1,9 @@
 import { Column, Entity, PrimaryGeneratedColumn, JoinColumn, OneToOne } from 'typeorm';
 
-import { User } from './users.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class UserInfo {
-
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -18,9 +17,13 @@ export class UserInfo {
   age: number;
 
   @JoinColumn()
-  @OneToOne(type => User, user => user.info, {
-    cascade: true
-  })
+  @OneToOne(
+    type => User,
+    user => user.info,
+    {
+      cascade: true,
+    },
+  )
   user: User;
 
   @Column('datetime')

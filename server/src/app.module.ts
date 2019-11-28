@@ -9,7 +9,6 @@ import { DateScalar } from './common/scalars/data.scalar';
 
 import UnauthorizedExceptionFilter from './common/filter/unauthorizd-exception-filter';
 
-
 @Module({
   imports: [
     UsersModule,

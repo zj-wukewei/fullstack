@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './entity/users.entity';
+import { User } from './entity/user.entity';
 import { CustomUserRepository } from './users.repository';
 
 @Injectable()
@@ -11,7 +11,7 @@ export class UsersService {
   }
 
   async findAll(): Promise<User[]> {
-    return await this.userRepository.find({ relations: ["info"] });
+    return await this.userRepository.find({ relations: ['info'] });
   }
 
   async findOneById(id: number): Promise<User> {

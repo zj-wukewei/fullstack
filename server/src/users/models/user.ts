@@ -14,5 +14,4 @@ export class User {
 
   @Field(type => Date)
   createDate: Date;
-
 }
