@@ -5,10 +5,11 @@ import { Table, Button } from 'antd';
 import UserModal from './components/userModol';
 
 import { dataFormat } from '../../utils';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useQuery, useMutation, useSubscription } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 
 import useToggle from '../../hooks/useToggle';
+import { useEffect } from 'react';
 
 const EXCHANGE_USERS = gql`
   query Users  {
@@ -16,6 +17,12 @@ const EXCHANGE_USERS = gql`
     users {
       id
       phone
+      info {
+        id
+        name
+        address
+        age
+      }
       createDate
     }
   }
@@ -33,22 +40,45 @@ const CREATE_USER = gql`
     }
 `;
 
+const USERS_SUBSCRIPTION = gql`
+  subscription onUserCreated {
+    userCreated {
+      id
+      phone
+      info {
+        id
+        name
+        address
+        age
+      }
+      createDate
+    }
+  }
+`;
 
 export default function() {
-  const { loading, data } = useQuery(EXCHANGE_USERS);
+  const { loading, data, subscribeToMore } = useQuery(EXCHANGE_USERS);
   const [ show, toggle ] = useToggle(false);
 
-   const [addUser, { loading: addLoading }] = useMutation(CREATE_USER, 
-    {
-      update(cache, { data: { addUser } }) {
-        const { users } = cache.readQuery({ query: EXCHANGE_USERS });
-        cache.writeQuery({
-          query: EXCHANGE_USERS,
-          data: { users: users.concat([addUser]) },
-        });
-        toggle();
-      }
-    });
+  useEffect(() => {
+     subscribeToMore({
+          document: USERS_SUBSCRIPTION,
+          updateQuery: (prev, { subscriptionData }) => {
+            if (!subscriptionData.data) return prev;
+            const newUserItem = subscriptionData.data.userCreated;
+            return Object.assign({}, prev, {
+              users: [...prev.users, newUserItem]
+            });
+          }
+        })
+  }
+  , [subscribeToMore]);
+
+   const [addUser, { loading: addLoading }] = useMutation(CREATE_USER, {
+     onCompleted() {        
+       toggle();
+     }
+   });
   const columns = [
     {
       title: 'id',
@@ -59,6 +89,12 @@ export default function() {
       title: '电话',
       dataIndex: 'phone',
       key: 'phone',
+    },
+     {
+      title: '姓名',
+      dataIndex: 'info',
+      key: 'info',
+      render: (info) => info && info.name || ''
     },
     {
       title: '创建时间',

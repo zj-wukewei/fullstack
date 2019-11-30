@@ -13,10 +13,12 @@
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-link-context": "^1.0.19",
     "apollo-link-http": "^1.5.16",
+    "apollo-link-ws": "^1.0.19",
     "graphql": "^14.5.8",
     "moment": "^2.24.0",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "subscriptions-transport-ws": "^0.9.16"
   },
   "devDependencies": {
     "babel-eslint": "^9.0.0",

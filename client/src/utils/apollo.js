@@ -1,5 +1,8 @@
 import { ApolloClient } from 'apollo-client';
 import { createHttpLink } from 'apollo-link-http';
+import { WebSocketLink } from 'apollo-link-ws';
+import { split } from 'apollo-link';
+import { getMainDefinition } from 'apollo-utilities';
 import { setContext } from 'apollo-link-context';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { onError } from "apollo-link-error";
@@ -18,6 +21,26 @@ cache.writeData({
 const httpLink = createHttpLink({
     uri: "http://localhost:3000/graphql",
 });
+
+const wsLink = new WebSocketLink({
+  uri: `ws://localhost:3000/graphql`,
+  options: {
+    reconnect: true,
+  }
+});
+
+const link = split(
+  // split based on operation type
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    );
+  },
+  wsLink,
+  httpLink,
+);
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
@@ -49,7 +72,7 @@ export const typeDefs = gql`
 `; 
 
 const client = new ApolloClient({
-    link: errorLink.concat(authLink).concat(httpLink),
+    link: errorLink.concat(authLink).concat(link),
     cache,
     resolvers: {},
     typeDefs: typeDefs
