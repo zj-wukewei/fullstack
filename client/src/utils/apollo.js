@@ -58,6 +58,7 @@ const client = new ApolloClient({
 const loginOut = () => {
   localStorage.setItem('token', "");
   cache.writeData({ data: { isLoggedIn: false }});
+  router.push('/login')
 }
 
 const loginIn = (token) => {
@@ -67,4 +68,4 @@ const loginIn = (token) => {
 
 
 
-export { client, loginIn };
+export { client, loginIn, loginOut };

@@ -6,6 +6,7 @@ import { User as UserEntity } from './entity/user.entity';
 import { NewUserInput } from './dto/new-user.input';
 import { UsersService } from './users.service';
 import { GqlAuthGuard } from '../auth/gql.auth.guard';
+import { CurrentUser } from 'src/auth/create.param.decorator';
 
 const pubSub = new PubSub();
 
@@ -25,6 +26,12 @@ export class UsersResolvers {
     id: number,
   ): Promise<UserEntity> {
     return await this.usersService.findOneById(id);
+  }
+
+  @Query(returns => User)
+  @UseGuards(GqlAuthGuard)
+  async whoAmI(@CurrentUser() user: User): Promise<UserEntity> {
+    return await this.usersService.findOneById(user.id);
   }
 
   @Mutation(returns => User)

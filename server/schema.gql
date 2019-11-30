@@ -22,6 +22,7 @@ input NewUserInput {
 type Query {
   users: [User!]!
   user(id: Float!): User!
+  whoAmI: User!
 }
 
 type Subscription {

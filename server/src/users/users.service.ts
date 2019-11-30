@@ -20,7 +20,7 @@ export class UsersService {
   }
 
   async findOneById(id: number): Promise<User> {
-    return await this.userRepository.findOne(id);
+    return await this.userRepository.findOne(id, { relations: ['info'] });
   }
 
   async findOneByPhone(phone: string): Promise<User> {
