@@ -5,7 +5,7 @@ import { Table, Button } from 'antd';
 import UserModal from './components/userModol';
 
 import { dataFormat } from '../../utils';
-import { useQuery, useMutation, useSubscription } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 
 import useToggle from '../../hooks/useToggle';
@@ -67,7 +67,7 @@ export default function() {
             if (!subscriptionData.data) return prev;
             const newUserItem = subscriptionData.data.userCreated;
             return Object.assign({}, prev, {
-              users: [...prev.users, newUserItem]
+              users: [newUserItem, ...prev.users]
             });
           }
         })
