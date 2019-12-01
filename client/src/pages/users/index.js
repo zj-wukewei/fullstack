@@ -114,7 +114,7 @@ export default function() {
         dataSource={data ? data.users : []} 
         columns={columns}
         loading={loading}
-        pagination={false} />
+        pagination={true} />
        
         <UserModal loading={addLoading} visible={show} addUser={addUser}  onCancel={() => toggle()}  />
     </div>  

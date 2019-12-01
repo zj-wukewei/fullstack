@@ -26,7 +26,6 @@ const EXCHANGE_WHOAMI = gql`
 
 function BasicLayout(props) {
   const { loading, data } = useQuery(EXCHANGE_WHOAMI);
-
   const menu = (
     <Menu>
       <Menu.Item>
@@ -50,7 +49,9 @@ function BasicLayout(props) {
           </Dropdown>
         </Header>
         <Content style={{ padding: '10px' }}>
-          <div style={{ background: '#fff', padding: 24, minHeight: 280, borderRadius: '4px' }}>{props.children}</div>
+          <div style={{ background: '#fff', padding: 24, minHeight: 280, borderRadius: '4px' }}>
+          { props.children }
+          </div>
         </Content>
       </Layout>
     </Spin>

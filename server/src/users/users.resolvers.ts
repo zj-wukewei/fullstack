@@ -6,7 +6,9 @@ import { User as UserEntity } from './entity/user.entity';
 import { NewUserInput } from './dto/new-user.input';
 import { UsersService } from './users.service';
 import { GqlAuthGuard } from '../auth/gql.auth.guard';
-import { CurrentUser } from 'src/auth/create.param.decorator';
+import { CurrentUser } from '../auth/create.param.decorator';
+import BasePageArgs from '../common/page/base-page-args';
+import { UserPageInfo } from './models/user-page';
 
 const pubSub = new PubSub();
 
@@ -18,6 +20,11 @@ export class UsersResolvers {
   @UseGuards(GqlAuthGuard)
   async users(): Promise<User[]> {
     return await this.usersService.findAll();
+  }
+
+  @Query(returns => UserPageInfo)
+  async usersPage(@Args() args: BasePageArgs): Promise<UserPageInfo> {
+    return await this.usersService.users(args);
   }
 
   @Query(returns => User)

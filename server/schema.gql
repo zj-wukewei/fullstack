@@ -21,6 +21,7 @@ input NewUserInput {
 
 type Query {
   users: [User!]!
+  usersPage(ps: Float!, pn: Float!): UserPageInfo!
   user(id: Float!): User!
   whoAmI: User!
 }
@@ -42,4 +43,9 @@ type UserInfo {
   address: String!
   age: Float!
   createDate: Date!
+}
+
+type UserPageInfo {
+  totalSize: Float!
+  list: [User!]!
 }
