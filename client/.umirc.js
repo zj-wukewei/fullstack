@@ -22,6 +22,9 @@ export default {
   plugins: [
     // ref: https://umijs.org/plugin/umi-plugin-react.html
     ['umi-plugin-react', {
+      locale: {
+        default: 'zh-CN'
+      },
       antd: true,
       dva: false,
       dynamicImport: false,

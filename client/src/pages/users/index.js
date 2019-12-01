@@ -1,4 +1,4 @@
-
+import { useState } from 'react';
 
 import { Table, Button } from 'antd';
 
@@ -11,10 +11,11 @@ import { gql } from 'apollo-boost';
 import useToggle from '../../hooks/useToggle';
 import { useEffect } from 'react';
 
-const EXCHANGE_USERS = gql`
-  query Users  {
-    isLoggedIn @client
-    users {
+const EXCHANGE_USERS_PAGE = gql`
+  query UsersPage($ps: Float!, $pn: Float!)  {
+    usersPage(ps: $ps, pn: $pn) {
+    totalSize
+    list {
       id
       phone
       info {
@@ -25,6 +26,7 @@ const EXCHANGE_USERS = gql`
       }
       createDate
     }
+  }
   }
 `;
 
@@ -57,7 +59,15 @@ const USERS_SUBSCRIPTION = gql`
 `;
 
 export default function() {
-  const { loading, data, subscribeToMore } = useQuery(EXCHANGE_USERS);
+
+  const [pn, setPn] = useState(0);
+  const [ps, setPs] = useState(10);
+
+  const { data, loading, subscribeToMore } = useQuery(EXCHANGE_USERS_PAGE, {
+     variables: { ps, pn }
+   });
+
+  const users = data && data.usersPage || { totalSize: 0, list: [] }
   const [ show, toggle ] = useToggle(false);
 
   useEffect(() => {
@@ -67,7 +77,10 @@ export default function() {
             if (!subscriptionData.data) return prev;
             const newUserItem = subscriptionData.data.userCreated;
             return Object.assign({}, prev, {
-              users: [newUserItem, ...prev.users]
+              usersPage: {
+                 totalSize: prev.totalSize +1,
+                 list: [newUserItem, ...prev.usersPage.list]
+              }
             });
           }
         })
@@ -104,6 +117,12 @@ export default function() {
     },
    
   ];
+
+  const handleOnChange = (pagination) => {
+    setPn(pagination.current - 1);
+    setPs(pagination.pageSize);
+  }
+
   return (
     <div>
       <Button type="primary" onClick={toggle}>添加</Button>
@@ -111,10 +130,16 @@ export default function() {
         rowKey="id" 
         style={{ marginTop: '10px' }}
         size='small'
-        dataSource={data ? data.users : []} 
+        dataSource={users.list}
         columns={columns}
         loading={loading}
-        pagination={true} />
+        onChange={handleOnChange}
+        pagination={{
+          showSizeChanger: true,
+          total: users.totalSize,
+          current: pn + 1,
+          pageSize: ps
+        }} />
        
         <UserModal loading={addLoading} visible={show} addUser={addUser}  onCancel={() => toggle()}  />
     </div>  
