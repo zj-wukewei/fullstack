@@ -78,7 +78,7 @@ export default function() {
             const newUserItem = subscriptionData.data.userCreated;
             return Object.assign({}, prev, {
               usersPage: {
-                 totalSize: prev.totalSize +1,
+                 totalSize: prev.totalSize + 1,
                  list: [newUserItem, ...prev.usersPage.list]
               }
             });
