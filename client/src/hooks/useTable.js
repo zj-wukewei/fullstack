@@ -8,7 +8,7 @@ const useTable = () => {
   const handleOnChange = useCallback((pagination) => {
     setPn(pagination.current - 1);
     setPs(pagination.pageSize);
-  }, [setPn, setPs]);
+  }, []);
 
 
   return {

@@ -9,7 +9,7 @@ import UserModal from './components/userModol';
 import useTable from '../../hooks/useTable';
 
 const EXCHANGE_USERS_PAGE = gql`
-  query UsersPage($ps: Float!, $pn: Float!)  {
+  query UsersPage($ps: Int!, $pn: Int!)  {
     usersPage(ps: $ps, pn: $pn) {
     totalSize
     list {

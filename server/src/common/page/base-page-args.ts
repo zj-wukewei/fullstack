@@ -1,13 +1,13 @@
 import { IsNotEmpty } from 'class-validator';
-import { Field, ArgsType } from 'type-graphql';
+import { Field, ArgsType, Int } from 'type-graphql';
 
 @ArgsType()
 class BasePageArgs {
-  @Field()
+  @Field(type => Int)
   @IsNotEmpty()
   ps: number;
 
-  @Field()
+  @Field(type => Int)
   @IsNotEmpty()
   pn: number;
 }

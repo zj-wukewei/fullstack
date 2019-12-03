@@ -21,7 +21,7 @@ input NewUserInput {
 
 type Query {
   users: [User!]!
-  usersPage(ps: Float!, pn: Float!): UserPageInfo!
+  usersPage(ps: Int!, pn: Int!): UserPageInfo!
   user(id: Float!): User!
   whoAmI: User!
 }
