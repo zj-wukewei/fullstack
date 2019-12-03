@@ -1,15 +1,12 @@
-import { useState } from 'react';
-
+import { useEffect } from 'react';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Table, Button } from 'antd';
 
-import UserModal from './components/userModol';
-
 import { dataFormat } from '../../utils';
-import { useQuery, useMutation } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
-
 import useToggle from '../../hooks/useToggle';
-import { useEffect } from 'react';
+import UserModal from './components/userModol';
+import useTable from '../../hooks/useTable';
 
 const EXCHANGE_USERS_PAGE = gql`
   query UsersPage($ps: Float!, $pn: Float!)  {
@@ -60,8 +57,7 @@ const USERS_SUBSCRIPTION = gql`
 
 export default function() {
 
-  const [pn, setPn] = useState(0);
-  const [ps, setPs] = useState(10);
+  const { ps, pn, handleOnChange, pagination } = useTable();
 
   const { data, loading, subscribeToMore } = useQuery(EXCHANGE_USERS_PAGE, {
      variables: { ps, pn }
@@ -73,19 +69,21 @@ export default function() {
   useEffect(() => {
      subscribeToMore({
           document: USERS_SUBSCRIPTION,
+          variables: {ps, pn},
           updateQuery: (prev, { subscriptionData }) => {
             if (!subscriptionData.data) return prev;
             const newUserItem = subscriptionData.data.userCreated;
             return Object.assign({}, prev, {
               usersPage: {
-                 totalSize: prev.totalSize + 1,
+                 ...prev.usersPage,
+                 totalSize: prev.usersPage.totalSize + 1,
                  list: [newUserItem, ...prev.usersPage.list]
               }
             });
           }
         })
   }
-  , [subscribeToMore]);
+  , [pn, ps, subscribeToMore]);
 
    const [addUser, { loading: addLoading }] = useMutation(CREATE_USER, {
      onCompleted() {        
@@ -118,11 +116,6 @@ export default function() {
    
   ];
 
-  const handleOnChange = (pagination) => {
-    setPn(pagination.current - 1);
-    setPs(pagination.pageSize);
-  }
-
   return (
     <div>
       <Button type="primary" onClick={toggle}>添加</Button>
@@ -135,10 +128,8 @@ export default function() {
         loading={loading}
         onChange={handleOnChange}
         pagination={{
-          showSizeChanger: true,
           total: users.totalSize,
-          current: pn + 1,
-          pageSize: ps
+          ...pagination
         }} />
        
         <UserModal loading={addLoading} visible={show} addUser={addUser}  onCancel={() => toggle()}  />
