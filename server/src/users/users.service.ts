@@ -2,9 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { User } from './entity/user.entity';
 import { CustomUserRepository } from './users.repository';
 import { CommonException } from '../common/exception/common-exception';
-import { PageInfo } from '../common/page/page-info';
 import BasePageArgs from '../common/page/base-page-args';
-import { UserPageInfo } from './models/user-page';
+import { paginate, Pagination } from '../common/page';
 
 @Injectable()
 export class UsersService {
@@ -22,15 +21,8 @@ export class UsersService {
     return await this.userRepository.find({ relations: ['info'], order: { createDate: 'DESC' } });
   }
 
-  async users(args: BasePageArgs): Promise<UserPageInfo> {
-    const totalSize = await this.userRepository.count();
-    const users = await this.userRepository.find({
-      relations: ['info'],
-      order: { createDate: 'DESC' },
-      skip: args.pn * args.ps,
-      take: args.ps,
-    });
-    return UserPageInfo.createPageInfo(totalSize, users);
+  async users(args: BasePageArgs): Promise<Pagination<User>> {
+    return await paginate(this.userRepository, { pageNumber: args.pn,  pageSize: args.ps}, {  order: { createDate: 'DESC' }});
   }
 
   async findOneById(id: number): Promise<User> {

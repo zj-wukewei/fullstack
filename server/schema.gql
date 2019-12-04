@@ -47,5 +47,6 @@ type UserInfo {
 
 type UserPageInfo {
   totalSize: Float!
+  hasMore: Boolean!
   list: [User!]!
 }
