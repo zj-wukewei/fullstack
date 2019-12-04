@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, OneToOne, ManyToMany, JoinTable } from 'typeorm';
 import { UserInfo } from './user.info.entity';
+import { Role } from './role.entity';
 
 @Entity()
 export class User {
@@ -15,6 +16,10 @@ export class User {
 
   @OneToOne(type => UserInfo, userInfo => userInfo.user)
   info: UserInfo;
+
+  @ManyToMany(type => Role)
+  @JoinTable()
+  roles: Role[];
 
   @Column('datetime')
   createDate: Date;

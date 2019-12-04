@@ -69,7 +69,6 @@ export default function() {
   useEffect(() => {
      subscribeToMore({
           document: USERS_SUBSCRIPTION,
-          variables: {ps, pn},
           updateQuery: (prev, { subscriptionData }) => {
             if (!subscriptionData.data) return prev;
             const newUserItem = subscriptionData.data.userCreated;
@@ -83,7 +82,7 @@ export default function() {
           }
         })
   }
-  , [pn, ps, subscribeToMore]);
+  , [subscribeToMore]);
 
    const [addUser, { loading: addLoading }] = useMutation(CREATE_USER, {
      onCompleted() {        

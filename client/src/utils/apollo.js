@@ -47,6 +47,8 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
     const { message = "未知错误", statusCode } = graphQLErrors[0].message || {};
     if (statusCode === 401) {
       antdMessage.info(message, 3, () => router.push('/login'));
+    } else if (statusCode === 403) {
+      antdMessage.error("您没有权限操作");
     } else {
       antdMessage.error(message);
     }

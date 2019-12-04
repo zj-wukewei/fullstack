@@ -5,10 +5,12 @@ import { User } from './models/user';
 import { User as UserEntity } from './entity/user.entity';
 import { NewUserInput } from './dto/new-user.input';
 import { UsersService } from './users.service';
+import {  AuthRolesGuard } from '../common/auth/auth-guard';
 import { GqlAuthGuard } from '../auth/gql.auth.guard';
 import { CurrentUser } from '../auth/create.param.decorator';
 import BasePageArgs from '../common/page/base-page-args';
 import { UserPageInfo } from './models/user-page';
+import { Roles } from 'src/common/auth/roles-decorators';
 
 const pubSub = new PubSub();
 
@@ -17,12 +19,13 @@ export class UsersResolvers {
   constructor(private readonly usersService: UsersService) {}
 
   @Query(returns => [User])
-  @UseGuards(GqlAuthGuard)
   async users(): Promise<User[]> {
     return await this.usersService.findAll();
   }
 
   @Query(returns => UserPageInfo)
+  @UseGuards(GqlAuthGuard, AuthRolesGuard)
+  @Roles('admin')
   async usersPage(@Args() args: BasePageArgs): Promise<UserPageInfo> {
     return await this.usersService.users(args);
   }
