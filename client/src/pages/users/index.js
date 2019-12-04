@@ -81,8 +81,7 @@ export default function() {
             });
           }
         })
-  }
-  , [subscribeToMore]);
+  }, [subscribeToMore]);
 
    const [addUser, { loading: addLoading }] = useMutation(CREATE_USER, {
      onCompleted() {        
