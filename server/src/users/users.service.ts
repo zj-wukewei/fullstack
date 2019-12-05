@@ -33,9 +33,14 @@ export class UsersService {
   async findOneByPhone(phone: string): Promise<User> {
     const user = await this.userRepository.findOneByPhone(phone);
     if (!user) {
-      throw new NotFoundException;
+      throw new NotFoundException();
     }
-    const roles = user.roles && await this.roleRepository.findByIds(user.roles.map(item => item.id), { relations: ['permissions'] });
+    const roles =
+      user.roles &&
+      (await this.roleRepository.findByIds(
+        user.roles.map(item => item.id),
+        { relations: ['permissions'] },
+      ));
     user.roles = roles;
     return user;
   }

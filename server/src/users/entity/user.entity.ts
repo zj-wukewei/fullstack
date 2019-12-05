@@ -4,7 +4,6 @@ import { Role } from './role.entity';
 
 @Entity()
 export class User {
-
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -14,7 +13,10 @@ export class User {
   @Column()
   password: string;
 
-  @OneToOne(type => UserInfo, userInfo => userInfo.user)
+  @OneToOne(
+    type => UserInfo,
+    userInfo => userInfo.user,
+  )
   info: UserInfo;
 
   @ManyToMany(type => Role)

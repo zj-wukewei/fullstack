@@ -11,5 +11,4 @@ export class UserPageInfo {
 
   @Field(type => [User])
   list: User[];
-
 }
