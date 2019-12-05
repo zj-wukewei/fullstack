@@ -18,7 +18,9 @@ export class AuthService {
   }
 
   async login(user: User): Promise<Auth> {
-    const payload = { phone: user.phone, id: user.id, info: user.info, roles: user.roles };
+    const roles = user.roles.map(item => item.name);
+    const permission = user.roles.map(item => item.permissions && item.permissions.map(p => p.name) || '' ).filter(item => item !== '').join(',').split(',');
+    const payload = { phone: user.phone, id: user.id, info: user.info, roles: roles, permission: permission };
     return {
       accessToken: this.jwtService.sign(payload),
     };

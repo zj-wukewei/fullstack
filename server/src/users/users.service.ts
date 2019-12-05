@@ -1,16 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './entity/user.entity';
-import { CustomUserRepository } from './users.repository';
+import { CustomUserRepository } from './repository/users.repository';
+import { CustomRoleRepository } from './repository/roles.repository';
 import { CommonException } from '../common/exception/common-exception';
 import BasePageArgs from '../common/page/base-page-args';
 import { paginate, Pagination } from '../common/page';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly userRepository: CustomUserRepository) {}
+  constructor(private readonly userRepository: CustomUserRepository, private readonly roleRepository: CustomRoleRepository) {}
 
   async create(user: User): Promise<User> {
-    const findUser = await this.findOneByPhone(user.phone);
+    const findUser = await this.userRepository.findOneByPhone(user.phone);
     if (findUser) {
       throw new CommonException('用户已存在');
     }
@@ -30,6 +31,12 @@ export class UsersService {
   }
 
   async findOneByPhone(phone: string): Promise<User> {
-    return await this.userRepository.findOneByPhone(phone);
+    const user = await this.userRepository.findOneByPhone(phone);
+    if (!user) {
+      throw new NotFoundException;
+    }
+    const roles = user.roles && await this.roleRepository.findByIds(user.roles.map(item => item.id), { relations: ['permissions'] });
+    user.roles = roles;
+    return user;
   }
 }

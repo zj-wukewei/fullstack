@@ -20,6 +20,8 @@ const EXCHANGE_WHOAMI = gql`
         address
         age
       }
+      roles
+      permission
     }
   }
 `;

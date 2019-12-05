@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Table, Button } from 'antd';
 
+import Authorize from '../../components/authorize';
+
 import { dataFormat } from '../../utils';
 import { gql } from 'apollo-boost';
 import useToggle from '../../hooks/useToggle';
@@ -117,7 +119,9 @@ export default function() {
 
   return (
     <div>
-      <Button type="primary" onClick={toggle}>添加</Button>
+      <Authorize match={['USER_CREATE']}>
+        <Button type="primary" onClick={toggle}>添加</Button>
+      </Authorize>
       <Table
         rowKey="id" 
         style={{ marginTop: '10px' }}

@@ -3,6 +3,7 @@ import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { User } from './models/user';
 import { User as UserEntity } from './entity/user.entity';
+import { AuthUser } from '../auth/models/auth-user';
 import { NewUserInput } from './dto/new-user.input';
 import { UsersService } from './users.service';
 import {  AuthRolesGuard } from '../common/auth/auth-guard';
@@ -10,7 +11,7 @@ import { GqlAuthGuard } from '../auth/gql.auth.guard';
 import { CurrentUser } from '../auth/create.param.decorator';
 import BasePageArgs from '../common/page/base-page-args';
 import { UserPageInfo } from './models/user-page';
-import { Roles } from 'src/common/auth/roles-decorators';
+import { Permissions } from '../common/auth/permissions-decorators';
 
 const pubSub = new PubSub();
 
@@ -25,7 +26,7 @@ export class UsersResolvers {
 
   @Query(returns => UserPageInfo)
   @UseGuards(GqlAuthGuard, AuthRolesGuard)
-  @Roles('admin')
+  @Permissions('USER_SELECT')
   async usersPage(@Args() args: BasePageArgs): Promise<UserPageInfo> {
     return await this.usersService.users(args);
   }
@@ -38,10 +39,10 @@ export class UsersResolvers {
     return await this.usersService.findOneById(id);
   }
 
-  @Query(returns => User)
+  @Query(returns => AuthUser)
   @UseGuards(GqlAuthGuard)
-  async whoAmI(@CurrentUser() user: User): Promise<UserEntity> {
-    return await this.usersService.findOneById(user.id);
+  async whoAmI(@CurrentUser() user: AuthUser): Promise<AuthUser> {
+    return user;
   }
 
   @Mutation(returns => User)

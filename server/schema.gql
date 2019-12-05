@@ -7,6 +7,15 @@ type Auth {
   accessToken: String!
 }
 
+type AuthUser {
+  id: ID!
+  phone: String!
+  info: UserInfo
+  roles: [String!]!
+  permission: [String!]!
+  createDate: Date!
+}
+
 """Date custom scalar type"""
 scalar Date
 
@@ -23,7 +32,7 @@ type Query {
   users: [User!]!
   usersPage(ps: Int!, pn: Int!): UserPageInfo!
   user(id: Float!): User!
-  whoAmI: User!
+  whoAmI: AuthUser!
 }
 
 type Subscription {
