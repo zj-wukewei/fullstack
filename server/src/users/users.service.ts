@@ -23,7 +23,7 @@ export class UsersService {
   }
 
   async users(args: BasePageArgs): Promise<Pagination<User>> {
-    return await paginate(this.userRepository, { pageNumber: args.pn,  pageSize: args.ps}, {  order: { createDate: 'DESC' }});
+    return await paginate(this.userRepository, { pageNumber: args.pn, pageSize: args.ps }, { order: { createDate: 'DESC' } });
   }
 
   async findOneById(id: number): Promise<User> {

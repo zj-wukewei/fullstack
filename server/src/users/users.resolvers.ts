@@ -6,7 +6,7 @@ import { User as UserEntity } from './entity/user.entity';
 import { AuthUser } from '../auth/models/auth-user';
 import { NewUserInput } from './dto/new-user.input';
 import { UsersService } from './users.service';
-import {  AuthRolesGuard } from '../common/auth/auth-guard';
+import { AuthRolesGuard } from '../common/auth/auth-guard';
 import { GqlAuthGuard } from '../auth/gql.auth.guard';
 import { CurrentUser } from '../auth/create.param.decorator';
 import BasePageArgs from '../common/page/base-page-args';
