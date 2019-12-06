@@ -3,7 +3,7 @@ import { Layout, Menu, Dropdown, Spin } from 'antd';
 
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
-
+import router from 'umi/router';
 import { loginOut } from '../utils/apollo';
 
 import './index.less';
@@ -27,7 +27,13 @@ const EXCHANGE_WHOAMI = gql`
 `;
 
 function BasicLayout(props) {
-  const { loading, data } = useQuery(EXCHANGE_WHOAMI);
+  const { loading, data } = useQuery(EXCHANGE_WHOAMI, {
+    onCompleted: ({ whoAmI }) => {
+      if(!whoAmI.info) {
+        router.push(`/users/info/${whoAmI.id}`);
+      }
+    }
+  });
   const menu = (
     <Menu>
       <Menu.Item>

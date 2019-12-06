@@ -14,6 +14,7 @@ export default {
         { path: '/login', component: '../pages/login/index' },
         { path: '/*', component: '../layouts', routes: [
           { path: '/users', component: './users/index', exact: true },
+          { path: '/users/info/:id', component: './users/info/$id.js', exact: true },
           ] 
         },
       ]

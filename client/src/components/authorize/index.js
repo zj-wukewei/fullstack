@@ -19,6 +19,7 @@ const Authorize = props => {
         return null;
     }
     const permission = data.whoAmI.permission || [];
+    //没办法ADMIN就是这么牛
     const isAdmin = 'ADMIN'.includes(permission);
     const show = permission.some(item => item.includes(match));
 
