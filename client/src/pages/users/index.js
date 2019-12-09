@@ -6,7 +6,7 @@ import Authorize from '../../components/authorize';
 
 import { dataFormat } from '../../utils';
 import { gql } from 'apollo-boost';
-import useToggle from '../../hooks/useToggle';
+import useModal from '../../hooks/useModal';
 import UserModal from './components/userModol';
 import useTable from '../../hooks/useTable';
 
@@ -65,8 +65,10 @@ export default function() {
      variables: { ps, pn }
    });
 
-  const users = data && data.usersPage || { totalSize: 0, list: [] }
-  const [ show, toggle ] = useToggle(false);
+  const users = data && data.usersPage || { totalSize: 0, list: [] };
+
+  const userModel = useModal();
+
 
   useEffect(() => {
      subscribeToMore({
@@ -87,7 +89,7 @@ export default function() {
 
    const [addUser, { loading: addLoading }] = useMutation(CREATE_USER, {
      onCompleted() {        
-       toggle();
+       userModel.closeModal();
      }
    });
   const columns = [
@@ -119,7 +121,7 @@ export default function() {
   return (
     <div>
       <Authorize match={['USER_CREATE']}>
-        <Button type="primary" onClick={toggle}>添加</Button>
+        <Button type="primary" onClick={() =>  userModel.openModal()}>添加</Button>
       </Authorize>
       <Table
         rowKey="id" 
@@ -134,7 +136,7 @@ export default function() {
           ...pagination
         }} />
        
-        <UserModal loading={addLoading} visible={show} addUser={addUser}  onCancel={() => toggle()}  />
+        <UserModal loading={addLoading} {...userModel} addUser={addUser}  />
     </div>  
   );
 }
