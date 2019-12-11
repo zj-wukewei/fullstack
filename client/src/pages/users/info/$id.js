@@ -1,7 +1,8 @@
 import React from 'react';
 import { Form, Input, InputNumber, Button } from 'antd';
 import { gql } from 'apollo-boost';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import { message } from 'antd';
 
 const formItemLayout = {
   labelCol: {
@@ -44,6 +45,18 @@ const EXCHANGE_WHOAMI = gql`
   }
 `;
 
+const UPDATE_USER_INFO = gql`
+   mutation updateUserInfo($name: String!, $address: String!, $age: Int!) {
+    updateUserInfo(updateUserInfo: {
+      name: $name 
+      address: $address
+      age: $age
+    }) {
+      id
+     }
+    }
+`;
+
 const UserInfo = props => {
   const {
     params: { id },
@@ -54,12 +67,29 @@ const UserInfo = props => {
 
   const info = data && data.whoAmI && data.whoAmI.info || {}
 
+  const [updateUserInfo, { loading }] = useMutation(UPDATE_USER_INFO, {
+    onCompleted() {
+      message.success("更新成功");
+    },
+  }); 
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    props.form.validateFields(async (err, values) => {
+      if (!err) {
+        updateUserInfo({ variables: { name: values.name, address: values.address, age: values.age } });
+      }
+    });
+  };
+  
+
+
   return (
     <>
       <span>个人信息更新:</span>
 
       <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'row' }}>
-        <Form layout="horizontal">
+        <Form onSubmit={handleSubmit} layout="horizontal">
           <Form.Item label="姓名" {...formItemLayout}>
             {getFieldDecorator('name', {
               rules: [{ required: true, message: '请输入姓名!' }],
@@ -79,7 +109,7 @@ const UserInfo = props => {
             })(<InputNumber min={0} />)}
           </Form.Item>
           <Form.Item {...tailFormItemLayout}>
-            <Button type="primary" htmlType="submit">
+            <Button loading={loading} type="primary" htmlType="submit">
               更新
             </Button>
           </Form.Item>

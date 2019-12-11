@@ -2,13 +2,16 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './entity/user.entity';
 import { CustomUserRepository } from './repository/users.repository';
 import { CustomRoleRepository } from './repository/roles.repository';
+import { CustomUserInfoRepository } from './repository/user-Info.repository';
 import { CommonException } from '../common/exception/common-exception';
 import BasePageArgs from '../common/page/base-page-args';
 import { paginate, Pagination } from '../common/page';
+import { UserInfo } from './entity/user.info.entity';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly userRepository: CustomUserRepository, private readonly roleRepository: CustomRoleRepository) {}
+  constructor(private readonly userRepository: CustomUserRepository, private readonly roleRepository: CustomRoleRepository
+    ,private readonly userInfoRepository: CustomUserInfoRepository) {}
 
   async create(user: User): Promise<User> {
     const findUser = await this.userRepository.findOneByPhone(user.phone);
@@ -28,6 +31,12 @@ export class UsersService {
 
   async findOneById(id: number): Promise<User> {
     return await this.userRepository.findOne(id, { relations: ['info'] });
+  }
+
+  async updateUserInfo(user: User, userInfo: UserInfo): Promise<User>  {
+    const info = await this.userInfoRepository.save(userInfo)
+    user.info = info;
+    return await this.userRepository.save(user)
   }
 
   async findOneByPhone(phone: string): Promise<User> {

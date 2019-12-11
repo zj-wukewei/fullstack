@@ -12,6 +12,8 @@ import { CurrentUser } from '../auth/create.param.decorator';
 import BasePageArgs from '../common/page/base-page-args';
 import { UserPageInfo } from './models/user-page';
 import { Permissions } from '../common/auth/permissions-decorators';
+import { UpdateUserInfo } from './dto/update-user-info-input';
+import { UserInfo } from './entity/user.info.entity';
 
 const pubSub = new PubSub();
 
@@ -55,6 +57,21 @@ export class UsersResolvers {
     pubSub.publish('userCreated', { userCreated: createdUser });
     return createdUser;
   }
+  
+  @Mutation(returns => User)
+  @UseGuards(GqlAuthGuard)
+  async updateUserInfo(@CurrentUser() current: AuthUser, @Args('updateUserInfo') info: UpdateUserInfo): Promise<UserEntity> {
+    const user = new UserEntity();
+    user.id = current.id;
+    const updateInfo = Object.assign(new UserInfo(), info);
+    if (current.info) {
+      //有就是更新
+      updateInfo.id = current.info.id;
+    }
+    updateInfo.createDate = new Date();
+    return await this.usersService.updateUserInfo(user, updateInfo);
+  }
+  
 
   @Subscription(returns => User)
   userCreated() {
