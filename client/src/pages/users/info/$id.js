@@ -3,6 +3,7 @@ import { Form, Input, InputNumber, Button } from 'antd';
 import { gql } from 'apollo-boost';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { message } from 'antd';
+import router from 'umi/router';
 
 const formItemLayout = {
   labelCol: {
@@ -52,7 +53,12 @@ const UPDATE_USER_INFO = gql`
       address: $address
       age: $age
     }) {
-      id
+      info {
+        id
+        name
+        address
+        age
+      }
      }
     }
 `;
@@ -70,7 +76,15 @@ const UserInfo = props => {
   const [updateUserInfo, { loading }] = useMutation(UPDATE_USER_INFO, {
     onCompleted() {
       message.success("更新成功");
+      router.push("/users");
     },
+    update(cache, { data: { updateUserInfo: { info } } }) {
+      const  { whoAmI } = cache.readQuery({ query: EXCHANGE_WHOAMI });
+      cache.writeQuery({
+        query: EXCHANGE_WHOAMI,
+        data: {  whoAmI: { ...whoAmI, info: info } }
+      });
+    }
   }); 
 
   const handleSubmit = e => {

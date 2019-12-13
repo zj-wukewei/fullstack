@@ -44,7 +44,10 @@ export class UsersResolvers {
   @Query(returns => AuthUser)
   @UseGuards(GqlAuthGuard)
   async whoAmI(@CurrentUser() user: AuthUser): Promise<AuthUser> {
-    return user;
+    const userEntity = await this.usersService.findOneByPhone(user.phone);
+    const roles = userEntity.roles.map(item => item.name);
+    const permission = userEntity.roles.map(item => item.permissions && item.permissions.map(p => p.name) || '' ).filter(item => item !== '').join(',').split(',');
+    return Object.assign(new AuthUser(), userEntity, { roles, permission });
   }
 
   @Mutation(returns => User)
