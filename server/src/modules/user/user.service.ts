@@ -7,6 +7,8 @@ import { paginate, Pagination } from '../../common/page';
 import { RoleService } from '../role/role.service';
 import { NewUserInput } from './dto/new-user.input';
 import { ConfigService } from '../config/config.service';
+import { CustomUserInfoRepository } from './user-Info.repository';
+import { UserInfo } from './models/user-info';
 
 @Injectable()
 export class UserService {
@@ -14,6 +16,7 @@ export class UserService {
     private readonly userRepository: CustomUserRepository,
     private readonly roleService: RoleService,
     private readonly configService: ConfigService,
+    private readonly userInfoRepository: CustomUserInfoRepository,
   ) {}
 
   async create(user: NewUserInput): Promise<User> {
@@ -38,6 +41,12 @@ export class UserService {
 
   async findOneById(id: number): Promise<User> {
     return await this.userRepository.findOne(id, { relations: ['info'] });
+  }
+
+  async updateUserInfo(user: User, userInfo: UserInfo): Promise<User> {
+    const info = await this.userInfoRepository.save(userInfo);
+    user.info = info;
+    return await this.userRepository.save(user);
   }
 
   async findOneByPhone(phone: string): Promise<User> {

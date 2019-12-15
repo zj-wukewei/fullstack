@@ -21,7 +21,7 @@ const UserModal = props => {
       okText='确定'
       loading={props.loading}
       cancelText='取消'
-      onCancel={props.onCancel}>
+      onCancel={props.closeModal}>
           <Form layout="vertical">
              <Form.Item label="手机号码">
                {getFieldDecorator('phone', {

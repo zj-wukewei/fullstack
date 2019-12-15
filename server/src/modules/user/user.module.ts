@@ -4,10 +4,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersResolvers } from './user.resolvers';
 import { UserService } from './user.service';
 import { CustomUserRepository } from './user.repository';
+import { CustomUserInfoRepository } from './user-Info.repository';
 import { RoleModule } from '../role/role.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CustomUserRepository]), RoleModule],
+  imports: [TypeOrmModule.forFeature([CustomUserRepository, CustomUserInfoRepository]), RoleModule],
   providers: [UserService, UsersResolvers],
   exports: [UserService],
 })
