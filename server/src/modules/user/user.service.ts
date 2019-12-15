@@ -1,21 +1,31 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './entity/user.entity';
-import { CustomUserRepository } from './repository/users.repository';
-import { CustomRoleRepository } from './repository/roles.repository';
-import { CommonException } from '../common/exception/common-exception';
-import BasePageArgs from '../common/page/base-page-args';
-import { paginate, Pagination } from '../common/page';
+import { CustomUserRepository } from './user.repository';
+import { CommonException } from '../../common/exception/common-exception';
+import BasePageArgs from '../../common/page/base-page-args';
+import { paginate, Pagination } from '../../common/page';
+import { RoleService } from '../role/role.service';
+import { NewUserInput } from './dto/new-user.input';
+import { ConfigService } from '../config/config.service';
 
 @Injectable()
-export class UsersService {
-  constructor(private readonly userRepository: CustomUserRepository, private readonly roleRepository: CustomRoleRepository) {}
+export class UserService {
+  constructor(
+    private readonly userRepository: CustomUserRepository,
+    private readonly roleService: RoleService,
+    private readonly configService: ConfigService,
+  ) {}
 
-  async create(user: User): Promise<User> {
+  async create(user: NewUserInput): Promise<User> {
     const findUser = await this.userRepository.findOneByPhone(user.phone);
     if (findUser) {
       throw new CommonException('用户已存在');
     }
-    return await this.userRepository.save(user);
+    return await this.userRepository.save({
+      ...user,
+      password: this.configService.getDefaultPassword(),
+      createDate: new Date(),
+    });
   }
 
   async findAll(): Promise<User[]> {
@@ -35,12 +45,7 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException();
     }
-    const roles =
-      user.roles &&
-      (await this.roleRepository.findByIds(
-        user.roles.map(item => item.id),
-        { relations: ['permissions'] },
-      ));
+    const roles = user.roles && (await this.roleService.findByIds(user));
     user.roles = roles;
     return user;
   }

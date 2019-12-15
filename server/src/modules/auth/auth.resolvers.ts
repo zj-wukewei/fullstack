@@ -1,12 +1,13 @@
+import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
+import { Auth } from './models/auth';
+import { AuthService } from './auth.service';
 import { UseGuards } from '@nestjs/common';
-import { Resolver, Args, Mutation } from '@nestjs/graphql';
-import { AuthService } from './auth/auth.service';
-import { LoginArgs } from './auth/dto/auth.args';
-import { Auth } from './auth/models/auth';
-import { UserNotFoundException } from './common/exception/user-not-found-exception';
 
-@Resolver('app')
-export class AppResolvers {
+import { LoginArgs } from './dto/auth.args';
+import { UserNotFoundException } from '../../common/exception/user-not-found-exception';
+
+@Resolver(of => Auth)
+export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
   @Mutation(returns => Auth)

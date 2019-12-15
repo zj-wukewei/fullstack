@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType } from 'type-graphql';
-import { UserInfo } from '../../users/models/user-info';
+import { UserInfo } from '../../user/models/user-info';
 
 @ObjectType()
 export class AuthUser {
@@ -13,11 +13,8 @@ export class AuthUser {
   info: UserInfo;
 
   @Field(type => String)
-  roles: String[]
+  roles: string[];
 
   @Field(type => String)
-  permission: String[]
-
-  @Field(type => Date)
-  createDate: Date;
+  permission: string[];
 }

@@ -15,7 +15,7 @@ export class AuthRolesGuard implements CanActivate {
     const user = ctx.getContext().req.user;
     const hasRole = () => {
       if ('ADMIN'.includes(user.permission)) {
-        //ADMIN有全部权限
+        // ADMIN有全部权限
         return true;
       }
       return user.permission.some(permission => permission.includes(permissions));

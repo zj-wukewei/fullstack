@@ -5,30 +5,30 @@ import { User } from './models/user';
 import { User as UserEntity } from './entity/user.entity';
 import { AuthUser } from '../auth/models/auth-user';
 import { NewUserInput } from './dto/new-user.input';
-import { UsersService } from './users.service';
-import { AuthRolesGuard } from '../common/auth/auth-guard';
-import { GqlAuthGuard } from '../auth/gql.auth.guard';
-import { CurrentUser } from '../auth/create.param.decorator';
-import BasePageArgs from '../common/page/base-page-args';
+import { UserService } from './user.service';
+import { AuthRolesGuard } from '../../common/auth/auth-guard';
+import { GqlAuthGuard } from '../../common/auth/gql.auth.guard';
+import { CurrentUser } from '../../common/auth/create.param.decorator';
+import BasePageArgs from '../../common/page/base-page-args';
 import { UserPageInfo } from './models/user-page';
-import { Permissions } from '../common/auth/permissions-decorators';
+import { Permissions } from '../../common/auth/permissions-decorators';
 
 const pubSub = new PubSub();
 
 @Resolver(of => User)
 export class UsersResolvers {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly userService: UserService) {}
 
   @Query(returns => [User])
   async users(): Promise<User[]> {
-    return await this.usersService.findAll();
+    return await this.userService.findAll();
   }
 
   @Query(returns => UserPageInfo)
   @UseGuards(GqlAuthGuard, AuthRolesGuard)
   @Permissions('USER_SELECT')
   async usersPage(@Args() args: BasePageArgs): Promise<UserPageInfo> {
-    return await this.usersService.users(args);
+    return await this.userService.users(args);
   }
 
   @Query(returns => User)
@@ -36,7 +36,7 @@ export class UsersResolvers {
     @Args('id', ParseIntPipe)
     id: number,
   ): Promise<UserEntity> {
-    return await this.usersService.findOneById(id);
+    return await this.userService.findOneById(id);
   }
 
   @Query(returns => AuthUser)
@@ -47,11 +47,7 @@ export class UsersResolvers {
 
   @Mutation(returns => User)
   async addUser(@Args('newUserData') newUserData: NewUserInput): Promise<UserEntity> {
-    const userEntity = new UserEntity();
-    userEntity.phone = newUserData.phone;
-    userEntity.password = '123456';
-    userEntity.createDate = new Date();
-    const createdUser = await this.usersService.create(userEntity);
+    const createdUser = await this.userService.create(newUserData);
     pubSub.publish('userCreated', { userCreated: createdUser });
     return createdUser;
   }

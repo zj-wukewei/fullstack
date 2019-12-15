@@ -13,7 +13,11 @@ type AuthUser {
   info: UserInfo
   roles: [String!]!
   permission: [String!]!
-  createDate: Date!
+}
+
+type BasePage {
+  totalSize: Float!
+  hasMore: Boolean!
 }
 
 """Date custom scalar type"""
