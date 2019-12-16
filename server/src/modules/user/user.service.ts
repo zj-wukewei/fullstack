@@ -54,8 +54,16 @@ export class UserService {
     if (!user) {
       throw new NotFoundException();
     }
-    const roles = user.roles && (await this.roleService.findByIds(user));
-    user.roles = roles;
+
+    if (user.roles && user.roles.length > 0) {
+      const roles = await this.roleService.findByIds(user);
+      user.roles = roles;
+      console.log('roles', roles)
+
+    }
+
+    console.log('1111', user)
+
     return user;
   }
 }

@@ -50,6 +50,8 @@ export class UsersResolvers {
   }
 
   @Mutation(returns => User)
+  @UseGuards(GqlAuthGuard, AuthRolesGuard)
+  @Permissions('USER_CREATE')
   async addUser(@Args('newUserData') newUserData: NewUserInput): Promise<UserEntity> {
     const createdUser = await this.userService.create(newUserData);
     pubSub.publish('userCreated', { userCreated: createdUser });

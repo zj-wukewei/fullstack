@@ -2,6 +2,7 @@ import React from 'react';
 import { gql } from 'apollo-boost';
 import { useQuery } from '@apollo/react-hooks';
 
+import { checkPermission } from '../../utils/permission';
 
 const EXCHANGE_WHOAMI = gql`
   query WhoAmI  {
@@ -19,13 +20,9 @@ const Authorize = props => {
         return null;
     }
     const permission = data.whoAmI.permission || [];
-    //没办法ADMIN就是这么牛
-    const isAdmin = 'ADMIN'.includes(permission);
-    const show = permission.some(item => item.includes(match));
-
     return (
         <>
-           { (isAdmin || show) ? props.children : null }
+           { checkPermission(match, permission) ? props.children : null }
         </>
     )
 

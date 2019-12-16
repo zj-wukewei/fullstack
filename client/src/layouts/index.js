@@ -1,14 +1,18 @@
 import React from 'react';
-import { Layout, Menu, Dropdown, Spin } from 'antd';
+import { Layout, Menu, Dropdown, Spin, Icon } from 'antd';
+import useToggle from '../hooks/useToggle';
 
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import router from 'umi/router';
 import { loginOut } from '../utils/apollo';
 
+import LayoutSider from '../components/layoutSider';
+
 import './index.less';
 
-const { Header, Content } = Layout;
+const { Header, Content, Sider } = Layout;
+
 const EXCHANGE_WHOAMI = gql`
   query WhoAmI {
     whoAmI {
@@ -27,12 +31,14 @@ const EXCHANGE_WHOAMI = gql`
 `;
 
 function BasicLayout(props) {
+  const [collapsed, toggle] = useToggle(false);
+
   const { loading, data } = useQuery(EXCHANGE_WHOAMI, {
     onCompleted: ({ whoAmI }) => {
-      if(!whoAmI.info) {
+      if (!whoAmI.info) {
         router.push(`/users/info/${whoAmI.id}`);
       }
-    }
+    },
   });
   const menu = (
     <Menu>
@@ -46,21 +52,29 @@ function BasicLayout(props) {
 
   return (
     <Spin spinning={loading} tip="初始化中...">
-      <Layout className="layout">
-        <Header>
-          <div className="logo" />
+      <Layout>
+        <LayoutSider collapsed={collapsed} permission={data && data && data.whoAmI && data.whoAmI.permission} />
 
-          <Dropdown overlay={menu} placement="bottomLeft">
-            <div className="user-info">
-              {data && data.whoAmI && data.whoAmI.info && data.whoAmI.info.name}
+        <Layout className="layout">
+          <Header style={{ background: '#fff', padding: 0 }}>
+            <Icon
+              className="trigger"
+              type={collapsed ? 'menu-unfold' : 'menu-fold'}
+              onClick={() => toggle()}
+            />
+
+            <Dropdown overlay={menu} placement="bottomLeft">
+              <div className="user-info">
+                {data && data.whoAmI && data.whoAmI.info && data.whoAmI.info.name}
+              </div>
+            </Dropdown>
+          </Header>
+          <Content style={{ padding: '10px' }}>
+            <div style={{ background: '#fff', padding: 24, minHeight: 280, borderRadius: '4px' }}>
+              {props.children}
             </div>
-          </Dropdown>
-        </Header>
-        <Content style={{ padding: '10px' }}>
-          <div style={{ background: '#fff', padding: 24, minHeight: 280, borderRadius: '4px' }}>
-          { props.children }
-          </div>
-        </Content>
+          </Content>
+        </Layout>
       </Layout>
     </Spin>
   );
