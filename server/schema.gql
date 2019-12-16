@@ -26,11 +26,23 @@ scalar Date
 type Mutation {
   addUser(newUserData: NewUserInput!): User!
   updateUserInfo(updateUserInfo: UpdateUserInfo!): User!
+  addRole(newUserData: NewRoleInput!): Role!
   login(phone: String!, password: String!): Auth!
+}
+
+input NewRoleInput {
+  name: String!
 }
 
 input NewUserInput {
   phone: String!
+}
+
+type Permission {
+  id: ID!
+  alias: String!
+  name: String!
+  createDate: Date!
 }
 
 type Query {
@@ -38,6 +50,20 @@ type Query {
   usersPage(ps: Int!, pn: Int!): UserPageInfo!
   user(id: Float!): User!
   whoAmI: AuthUser!
+  roles(ps: Int!, pn: Int!): RolePageInfo!
+}
+
+type Role {
+  id: ID!
+  name: String!
+  permissions: [Permission!]
+  createDate: Date!
+}
+
+type RolePageInfo {
+  totalSize: Float!
+  hasMore: Boolean!
+  list: [Role!]!
 }
 
 type Subscription {

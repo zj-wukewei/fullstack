@@ -14,7 +14,7 @@ export class AuthRolesGuard implements CanActivate {
     const ctx = GqlExecutionContext.create(context);
     const user = ctx.getContext().req.user;
     const hasRole = () => {
-      if (user.permission.some(item => item === "ADMIN")) {
+      if (user.permission.some(item => item === 'ADMIN')) {
         // ADMIN有全部权限
         return true;
       }

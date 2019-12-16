@@ -66,28 +66,6 @@ const LayoutSider = props => {
     <Sider collapsedWidth={0} trigger={null} collapsible collapsed={collapsed}>
       <div className="logo" />
       <Menu theme="dark" mode="inline">
-        {/* <SubMenu
-          key={'user'}
-          title={
-            <span>
-              <Icon type="user" />
-              用户
-            </span>
-          }
-        >
-          <Menu.Item key="1">
-            <Icon type="user" />
-            <span>用户</span>
-          </Menu.Item>
-          <Menu.Item key="2">
-            <Rcon type="icon-role" />
-            <span>角色</span>
-          </Menu.Item>
-          <Menu.Item key="3">
-            <Icon type="upload" />
-            <span>权限</span>
-          </Menu.Item>
-        </SubMenu> */}
         {permission && renderSubMenu(permission)}
       </Menu>
     </Sider>

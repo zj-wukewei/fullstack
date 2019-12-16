@@ -58,12 +58,7 @@ export class UserService {
     if (user.roles && user.roles.length > 0) {
       const roles = await this.roleService.findByIds(user);
       user.roles = roles;
-      console.log('roles', roles)
-
     }
-
-    console.log('1111', user)
-
     return user;
   }
 }
