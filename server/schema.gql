@@ -26,7 +26,8 @@ scalar Date
 type Mutation {
   addUser(newUserData: NewUserInput!): User!
   updateUserInfo(updateUserInfo: UpdateUserInfo!): User!
-  addRole(newUserData: NewRoleInput!): Role!
+  addRole(newRoleData: NewRoleInput!): Role!
+  updateRole(updateRoleData: UpdateRoleInput!, id: Int!): Role!
   login(phone: String!, password: String!): Auth!
 }
 
@@ -68,6 +69,11 @@ type RolePageInfo {
 
 type Subscription {
   userCreated: User!
+}
+
+input UpdateRoleInput {
+  name: String!
+  permissionIds: [Int!]
 }
 
 input UpdateUserInfo {

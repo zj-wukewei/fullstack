@@ -11,7 +11,7 @@ import LayoutSider from '../components/layoutSider';
 
 import './index.less';
 
-const { Header, Content, Sider } = Layout;
+const { Header, Content } = Layout;
 
 const EXCHANGE_WHOAMI = gql`
   query WhoAmI {

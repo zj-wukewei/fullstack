@@ -9,6 +9,7 @@ import { NewUserInput } from './dto/new-user.input';
 import { ConfigService } from '../config/config.service';
 import { CustomUserInfoRepository } from './user-Info.repository';
 import { UserInfo } from './models/user-info';
+import { errorUtil } from '../../utils/error.utils';
 
 @Injectable()
 export class UserService {
@@ -22,7 +23,7 @@ export class UserService {
   async create(user: NewUserInput): Promise<User> {
     const findUser = await this.userRepository.findOneByPhone(user.phone);
     if (findUser) {
-      throw new CommonException('用户已存在');
+      return errorUtil.ERROR({ error: "用户已存在" });
     }
     return await this.userRepository.save({
       ...user,

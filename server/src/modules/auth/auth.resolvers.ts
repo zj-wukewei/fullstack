@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { UseGuards } from '@nestjs/common';
 
 import { LoginArgs } from './dto/auth.args';
-import { UserNotFoundException } from '../../common/exception/user-not-found-exception';
+import { errorUtil } from '../../utils/error.utils';
 
 @Resolver(of => Auth)
 export class AuthResolver {
@@ -15,7 +15,7 @@ export class AuthResolver {
   async login(@Args() loginArgs: LoginArgs): Promise<Auth> {
     const user = await this.authService.validateUser(loginArgs.phone, loginArgs.password);
     if (!user) {
-      throw new UserNotFoundException();
+      return errorUtil.ERROR({ error: "用户未找到" });
     }
     return await this.authService.login(user);
   }

@@ -11,7 +11,7 @@ export class Role {
 
   @ManyToMany(type => Permission)
   @JoinTable()
-  permissions: Permission[];
+  permissions?: Permission[];
 
   @Column('datetime')
   createDate: Date;

@@ -5,10 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { RoleModule } from './modules/role/role.module';
+import { PermissionModule } from './modules/permission/permission.module';
 import { ConfigModule } from './modules/config/config.module';
 import { DateScalar } from './common/scalars/data.scalar';
 
 import UnauthorizedExceptionFilter from './common/filter/unauthorizd-exception-filter';
+import { loggerUtil } from './utils/logger.utils';
 
 @Module({
   imports: [
@@ -16,11 +18,16 @@ import UnauthorizedExceptionFilter from './common/filter/unauthorizd-exception-f
     AuthModule,
     RoleModule,
     ConfigModule,
+    PermissionModule,
     TypeOrmModule.forRoot(),
     GraphQLModule.forRoot({
       context: ({ req }) => ({ req }),
       autoSchemaFile: 'schema.gql',
       installSubscriptionHandlers: true,
+      formatError(error: any) {
+        loggerUtil.error(`${JSON.stringify(error)}\n`, 'GraphQLModule')
+        return error;
+      }
     }),
   ],
   providers: [
