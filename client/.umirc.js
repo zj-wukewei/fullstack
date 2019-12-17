@@ -13,9 +13,12 @@ export default {
         { path: "/", component: "./index" },
         { path: '/login', component: '../pages/login/index' },
         { path: '/*', component: '../layouts', routes: [
+          { path: '/home', component: './home/index', exact: true },
           { path: '/users', component: './users/index', exact: true },
           { path: '/users/info/:id', component: './users/info/$id.js', exact: true },
-          { path: '/setting/role', component: './setting/role/index', exact: true },
+          { path: '/roles', component: './roles/index', exact: true },
+          { path: '/permissions', component: './permissions/index', exact: true },
+          { path: '/*', component: './404' },
           ] 
         },
       ]

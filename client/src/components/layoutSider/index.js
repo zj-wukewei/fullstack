@@ -1,6 +1,6 @@
 import { Layout, Menu, Icon } from 'antd';
 import Rcon from '../rcon';
-
+import Link from 'umi/link';
 import { masterRoute } from '../../configs/router';
 import { checkIsAdmin } from '../../utils/permission';
 
@@ -9,19 +9,18 @@ const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 const checkPermission = (match, permission) => {
+  if (checkIsAdmin(permission)) {
+    return true;
+  }
 
-    if(checkIsAdmin(permission)) {
-        return true;
-    }
+  if (match.includes('|')) {
+    return match
+      .split('|')
+      .map(p => p.trim())
+      .some(k => permission.includes(k));
+  }
 
-    if (match.includes('|')) {
-        return match
-          .split('|')
-          .map(p => p.trim())
-          .some(k => permission.includes(k));
-      }
-    
-    return permission.includes(permission);
+  return permission.includes(permission);
 };
 
 const renderSubMenu = permission => {
@@ -37,7 +36,7 @@ const renderSubMenu = permission => {
             </span>
           }
         >
-            { menu.children.map(subMenu => renderMenuItem(subMenu, permission)) }
+          {menu.children.map(subMenu => renderMenuItem(subMenu, permission))}
         </SubMenu>
       );
     }
@@ -50,8 +49,10 @@ const renderMenuItem = (subMenu, permission) => {
   if (checkPermission(subMenu.permission, permission) || subMenu.allow) {
     return (
       <Menu.Item key={subMenu.path}>
-        <Rcon type={subMenu.icon} />
-        <span> {subMenu.name}</span>
+        <Link to={subMenu.path}>
+          <Rcon type={subMenu.icon} />
+          {subMenu.name}
+        </Link>
       </Menu.Item>
     );
   }
@@ -60,12 +61,13 @@ const renderMenuItem = (subMenu, permission) => {
 };
 
 const LayoutSider = props => {
-  const { collapsed, permission } = props;
-  console.log('LayoutSider', permission);
+  const { collapsed, permission, match: { url } } = props;
+  const find = masterRoute.find(subMenu => subMenu.children.find(menu => menu.path === url));
+  const uiOpenKeys = find ? find.path || '' : '';
   return (
     <Sider collapsedWidth={0} trigger={null} collapsible collapsed={collapsed}>
       <div className="logo" />
-      <Menu theme="dark" mode="inline">
+      <Menu theme="dark" mode="inline" defaultOpenKeys={[uiOpenKeys]} defaultSelectedKeys={[url]} >
         {permission && renderSubMenu(permission)}
       </Menu>
     </Sider>

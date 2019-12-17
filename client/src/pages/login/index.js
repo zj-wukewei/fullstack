@@ -18,7 +18,7 @@ const Login = () => {
   const [login, { loading, error }] = useMutation(LOGIN_APP, {
     onCompleted({ login }) {
       loginIn(login.accessToken);
-      router.push('/users');
+      router.push('/');
     },
     onError(error) {
       console.error(error);

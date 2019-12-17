@@ -12,7 +12,7 @@ const IS_LOGGED_IN = gql`
 
 function BasicAppLayout(props) {
   const { data } = useQuery(IS_LOGGED_IN);
-  const redirect = data.isLoggedIn ? '/users' : '/login';
+  const redirect = data.isLoggedIn ? '/home' : '/login';
   return (
     <Redirect to={redirect} {...props} />
   );

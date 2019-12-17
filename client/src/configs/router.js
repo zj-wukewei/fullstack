@@ -25,6 +25,12 @@ const masterRoute = [{
 }];
 
 
+const findFistRouteByPermission = (permission) => {
+    let url = "";
+    
+    return url;
+}
+
 export {
     masterRoute
 };
