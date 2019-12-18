@@ -2,13 +2,14 @@ import { useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Table, Button } from 'antd';
 
-import Authorize from '../../components/authorize';
+import Authorize, { authorize } from '../../components/authorize';
 
 import { dataFormat } from '../../utils';
 import { gql } from 'apollo-boost';
 import useModal from '../../hooks/useModal';
-import UserModal from './components/userModol';
+import UserModal from './components/userModal';
 import useTable from '../../hooks/useTable';
+import { UserPagePermission } from '../../configs/router';
 
 const EXCHANGE_USERS_PAGE = gql`
   query UsersPage($ps: Int!, $pn: Int!)  {
@@ -57,7 +58,7 @@ const USERS_SUBSCRIPTION = gql`
   }
 `;
 
-export default function() {
+const Users = () => {
 
   const { ps, pn, handleOnChange, pagination } = useTable();
 
@@ -87,11 +88,12 @@ export default function() {
         })
   }, [subscribeToMore]);
 
-   const [addUser, { loading: addLoading }] = useMutation(CREATE_USER, {
+  const [addUser, { loading: addLoading }] = useMutation(CREATE_USER, {
      onCompleted() {        
        userModel.closeModal();
      }
    });
+
   const columns = [
     {
       title: 'id',
@@ -120,7 +122,7 @@ export default function() {
 
   return (
     <div>
-      <Authorize match={['USER_CREATE']}>
+      <Authorize match={'USER_CREATE'}>
         <Button type="primary" onClick={() =>  userModel.openModal()}>添加</Button>
       </Authorize>
       <Table
@@ -140,3 +142,5 @@ export default function() {
     </div>  
   );
 }
+
+export default authorize(UserPagePermission)(Users)

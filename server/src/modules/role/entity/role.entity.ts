@@ -9,6 +9,9 @@ export class Role {
   @Column()
   name: string;
 
+  @Column({ nullable: true })
+  describe?: string;
+
   @ManyToMany(type => Permission)
   @JoinTable()
   permissions?: Permission[];

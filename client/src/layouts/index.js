@@ -69,7 +69,7 @@ function BasicLayout(props) {
             </Dropdown>
           </Header>
           <Content style={{ padding: '10px' }}>
-            <div style={{ background: '#fff', padding: 24, minHeight: 280, borderRadius: '4px' }}>
+            <div style={{ background: '#fff', padding: 24, borderRadius: '4px' }}>
               {props.children}
             </div>
           </Content>

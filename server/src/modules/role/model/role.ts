@@ -9,6 +9,9 @@ export class Role {
   @Field()
   name: string;
 
+  @Field(() => String, { nullable: true })
+  describe?: string;
+
   @Field(() => [Permission], { nullable: true })
   permissions?: Permission[];
 

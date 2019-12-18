@@ -2,26 +2,11 @@ import { Layout, Menu, Icon } from 'antd';
 import Rcon from '../rcon';
 import Link from 'umi/link';
 import { masterRoute } from '../../configs/router';
-import { checkIsAdmin } from '../../utils/permission';
+import { checkPermission } from '../../utils/permission';
 
 const { Sider } = Layout;
 
 const { SubMenu } = Menu;
-
-const checkPermission = (match, permission) => {
-  if (checkIsAdmin(permission)) {
-    return true;
-  }
-
-  if (match.includes('|')) {
-    return match
-      .split('|')
-      .map(p => p.trim())
-      .some(k => permission.includes(k));
-  }
-
-  return permission.includes(permission);
-};
 
 const renderSubMenu = permission => {
   return masterRoute.map(menu => {
@@ -62,12 +47,15 @@ const renderMenuItem = (subMenu, permission) => {
 
 const LayoutSider = props => {
   const { collapsed, permission, match: { url } } = props;
-  const find = masterRoute.find(subMenu => subMenu.children.find(menu => menu.path === url));
+  const find = masterRoute.find(subMenu => subMenu.children.find(menu => url.startsWith(menu.path)));
   const uiOpenKeys = find ? find.path || '' : '';
+  const findChuldren = find && find.children.find(item => url.startsWith(item.path));
+  const uiSelectKey = findChuldren && findChuldren.path
+
   return (
     <Sider collapsedWidth={0} trigger={null} collapsible collapsed={collapsed}>
       <div className="logo" />
-      <Menu theme="dark" mode="inline" defaultOpenKeys={[uiOpenKeys]} defaultSelectedKeys={[url]} >
+      <Menu theme="dark" mode="inline" defaultOpenKeys={[uiOpenKeys]} defaultSelectedKeys={[uiSelectKey]} >
         {permission && renderSubMenu(permission)}
       </Menu>
     </Sider>

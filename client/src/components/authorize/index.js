@@ -25,7 +25,7 @@ const Authorize = props => {
 
 export function authorize(match, fallback) {
   return WrappedComponent => {
-    const ComponentWithPolicy = props => {
+    const ComponentWithPermission = props => {
       const { loading, data } = useQuery(EXCHANGE_WHOAMI);
 
       if (loading || !data || !data.whoAmI) {
@@ -41,9 +41,9 @@ export function authorize(match, fallback) {
 
     const displayName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
 
-    ComponentWithPolicy.displayName = `authorize(${displayName})`;
+    ComponentWithPermission.displayName = `authorize(${displayName})`;
 
-    return ComponentWithPolicy;
+    return ComponentWithPermission;
   };
 }
 

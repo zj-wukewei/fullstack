@@ -1,19 +1,21 @@
 const checkPermission = (match, permission = []) => {
-    // 没办法ADMIN就是这么牛
-    const isAdmin = checkIsAdmin(permission);
-    if (isAdmin) {
-        return true;
-    }
-    const show = permission.some(item => item.includes(match));
-    return show;
-}
+  // 没办法ADMIN就是这么牛
+  if (checkIsAdmin(permission)) {
+    return true;
+  }
 
-const checkIsAdmin = (permission) => {
-    return permission.some(item => item === "ADMIN");
+  if (match.includes('|')) {
+    return match
+      .split('|')
+      .map(p => p.trim())
+      .some(k => permission.includes(k));
+  }
+
+  return permission.some(k => k === match);
 };
 
-
-export {
-    checkPermission,
-    checkIsAdmin
+const checkIsAdmin = permission => {
+  return permission.some(item => item === 'ADMIN');
 };
+
+export { checkPermission, checkIsAdmin };

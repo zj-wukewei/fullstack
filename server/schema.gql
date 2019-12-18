@@ -33,6 +33,7 @@ type Mutation {
 
 input NewRoleInput {
   name: String!
+  describe: String
 }
 
 input NewUserInput {
@@ -52,11 +53,13 @@ type Query {
   user(id: Float!): User!
   whoAmI: AuthUser!
   roles(ps: Int!, pn: Int!): RolePageInfo!
+  role(id: Int!): Role!
 }
 
 type Role {
   id: ID!
   name: String!
+  describe: String
   permissions: [Permission!]
   createDate: Date!
 }
@@ -73,6 +76,7 @@ type Subscription {
 
 input UpdateRoleInput {
   name: String!
+  describe: String
   permissionIds: [Int!]
 }
 

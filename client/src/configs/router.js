@@ -1,3 +1,10 @@
+
+
+
+const UserPagePermission = 'USER_CREATE | USER_SELECT';
+const RolePagePermission = 'ROLE_CREATE | ROLE_SELECT';
+const PermissionPagePermission = 'PERMISSION_CREATE | PERMISSION_SELECT';
+
 const masterRoute = [{
     name: '用户',
     permission: 'USER_CREATE | USER_SELECT | ROLE_CREATE | ROLE_SELECT | PERMISSION_CREATE | PERMISSION_SELECT',
@@ -6,31 +13,28 @@ const masterRoute = [{
     allow: false,
     children: [{
         name: '用户',
-        permission: 'USER_CREATE | USER_SELECT',
+        permission: UserPagePermission,
         path: '/users',
         icon: 'icon-user',
     },
     {
         name: '角色',
-        permission: 'ROLE_CREATE | ROLE_SELECT',
+        permission: RolePagePermission,
         path: '/roles',
         icon: 'icon-role',
     },
     {
         name: '权限',
-        permission: 'PERMISSION_CREATE | PERMISSION_SELECT',
+        permission: PermissionPagePermission,
         path: '/permissions',
         icon: 'icon-permission',
     }]
 }];
 
 
-const findFistRouteByPermission = (permission) => {
-    let url = "";
-    
-    return url;
-}
-
 export {
-    masterRoute
+    masterRoute,
+    UserPagePermission,
+    RolePagePermission,
+    PermissionPagePermission
 };

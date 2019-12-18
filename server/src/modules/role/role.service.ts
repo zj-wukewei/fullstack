@@ -28,6 +28,10 @@ export class RoleService {
     return await paginate(this.roleRepository, { pageNumber: args.pn, pageSize: args.ps }, { order: { createDate: 'DESC' } });
   }
 
+  async role(id: number): Promise<Role> {
+    return await this.roleRepository.findOne(id, { relations: ['permissions'] })
+  }
+
   async addRole(args: NewRoleInput): Promise<Role> {
     return this.roleRepository.save({
       ...args,

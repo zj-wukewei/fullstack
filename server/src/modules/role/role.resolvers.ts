@@ -23,6 +23,11 @@ export class RoleResolver {
     return await this.roleService.roles(args);
   }
 
+  @Query(returns => Role)
+  async role(@Args({ name: 'id', type: () => Int }) id: number): Promise<RoleEntity> {
+    return await this.roleService.role(id);
+  }
+
   @Mutation(returns => Role)
   @UseGuards(GqlAuthGuard, AuthRolesGuard)
   @Permissions('ROLE_CREATE')

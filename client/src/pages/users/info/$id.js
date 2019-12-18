@@ -64,9 +64,6 @@ const UPDATE_USER_INFO = gql`
 `;
 
 const UserInfo = props => {
-  const {
-    params: { id },
-  } = props.match;
 
   const { getFieldDecorator } = props.form;
   const { data } = useQuery(EXCHANGE_WHOAMI);

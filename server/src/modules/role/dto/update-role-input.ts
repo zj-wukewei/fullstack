@@ -7,6 +7,10 @@ export class UpdateRoleInput {
   @IsNotEmpty({ message: 'name不能为空' })
   name: string;
 
+
+  @Field(type => String, { nullable: true })
+  describe?: string;
+
   @Field(() => [Int], { nullable: true })
   permissionIds?: number[];
 }
