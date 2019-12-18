@@ -2,11 +2,11 @@ import { Field, InputType } from 'type-graphql';
 import { IsNotEmpty } from 'class-validator';
 
 @InputType()
-export class NewRoleInput {
+export class NewPermissionInput {
   @Field(type => String)
   @IsNotEmpty({ message: 'name不能为空' })
   name: string;
 
-  @Field(type => String, { nullable: true })
-  describe?: string;
+  @Field(type => String)
+  alias: string;
 }

@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from '../user/entity/user.entity';
 import { Auth } from './models/auth';
 import { AuthUser } from './models/auth-user';
-import { userTramsforAuthUser } from 'src/utils/user.utils';
+import { userUtil } from 'src/utils';
 
 @Injectable()
 export class AuthService {
@@ -19,7 +19,7 @@ export class AuthService {
   }
 
   async login(user: User): Promise<Auth> {
-    const payload: AuthUser = { ...userTramsforAuthUser(user) };
+    const payload: AuthUser = { ...userUtil.userTramsforAuthUser(user) };
     return {
       accessToken: this.jwtService.sign(payload),
     };

@@ -4,11 +4,12 @@ import { CustomUserRepository } from './user.repository';
 import BasePageArgs from '../../common/page/base-page-args';
 import { paginate, Pagination } from '../../common/page';
 import { RoleService } from '../role/role.service';
-import { NewUserInput } from './dto/new-user.input';
+import { NewUserInput, UpdateUserInfo } from './dto';
 import { ConfigService } from '../config/config.service';
 import { CustomUserInfoRepository } from './user-Info.repository';
-import { UserInfo } from './models/user-info';
-import { errorUtil } from '../../utils/error.utils';
+import { UserInfo } from './models';
+import { errorUtil } from '../../utils';
+import { AuthUser } from '../auth/models/auth-user';
 
 @Injectable()
 export class UserService {
@@ -43,8 +44,15 @@ export class UserService {
     return await this.userRepository.findOne(id, { relations: ['info'] });
   }
 
-  async updateUserInfo(user: User, userInfo: UserInfo): Promise<User> {
-    const info = await this.userInfoRepository.save(userInfo);
+  async updateUserInfo(current: AuthUser, args: UpdateUserInfo): Promise<User> {
+    const updateInfo: UserInfo = Object.assign(new UserInfo(), args);
+    if (current.info) {
+      updateInfo.id = current.info.id;
+    }
+    updateInfo.createDate = new Date();
+    const info = await this.userInfoRepository.save(updateInfo);
+    const user = new User();
+    user.id = current.id;
     user.info = info;
     return await this.userRepository.save(user);
   }

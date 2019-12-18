@@ -7,7 +7,6 @@ export class UpdateRoleInput {
   @IsNotEmpty({ message: 'name不能为空' })
   name: string;
 
-
   @Field(type => String, { nullable: true })
   describe?: string;
 

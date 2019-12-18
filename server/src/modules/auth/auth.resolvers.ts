@@ -1,10 +1,10 @@
-import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { Auth } from './models/auth';
 import { AuthService } from './auth.service';
 import { UseGuards } from '@nestjs/common';
 
 import { LoginArgs } from './dto/auth.args';
-import { errorUtil } from '../../utils/error.utils';
+import { errorUtil } from '../../utils';
 
 @Resolver(of => Auth)
 export class AuthResolver {
@@ -15,7 +15,7 @@ export class AuthResolver {
   async login(@Args() loginArgs: LoginArgs): Promise<Auth> {
     const user = await this.authService.validateUser(loginArgs.phone, loginArgs.password);
     if (!user) {
-      return errorUtil.ERROR({ error: "用户未找到" });
+      return errorUtil.ERROR({ error: '用户未找到' });
     }
     return await this.authService.login(user);
   }

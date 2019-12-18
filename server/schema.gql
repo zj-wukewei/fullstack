@@ -24,10 +24,11 @@ type BasePage {
 scalar Date
 
 type Mutation {
-  addUser(newUserData: NewUserInput!): User!
+  createUser(newUserData: NewUserInput!): User!
   updateUserInfo(updateUserInfo: UpdateUserInfo!): User!
-  addRole(newRoleData: NewRoleInput!): Role!
+  createRole(newRoleData: NewRoleInput!): Role!
   updateRole(updateRoleData: UpdateRoleInput!, id: Int!): Role!
+  deleteRole(id: Int!): Role!
   login(phone: String!, password: String!): Auth!
 }
 
@@ -47,13 +48,20 @@ type Permission {
   createDate: Date!
 }
 
+type PermissionsPagination {
+  totalSize: Float!
+  hasMore: Boolean!
+  list: [Permission!]!
+}
+
 type Query {
   users: [User!]!
-  usersPage(ps: Int!, pn: Int!): UserPageInfo!
+  usersPage(ps: Int!, pn: Int!): UsersPagination!
   user(id: Float!): User!
   whoAmI: AuthUser!
-  roles(ps: Int!, pn: Int!): RolePageInfo!
+  roles(ps: Int!, pn: Int!): RolesPagination!
   role(id: Int!): Role!
+  permissions(ps: Int!, pn: Int!): PermissionsPagination!
 }
 
 type Role {
@@ -64,7 +72,7 @@ type Role {
   createDate: Date!
 }
 
-type RolePageInfo {
+type RolesPagination {
   totalSize: Float!
   hasMore: Boolean!
   list: [Role!]!
@@ -101,7 +109,7 @@ type UserInfo {
   createDate: Date!
 }
 
-type UserPageInfo {
+type UsersPagination {
   totalSize: Float!
   hasMore: Boolean!
   list: [User!]!

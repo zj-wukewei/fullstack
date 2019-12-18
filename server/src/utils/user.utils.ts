@@ -5,14 +5,14 @@ const userTramsforAuthUser = (user: User): AuthUser => {
   const roles = user.roles.map(item => item.name);
   let permission = [];
   if (roles && roles.length > 0) {
-     permission = user.roles
-    .map(item => (item.permissions && item.permissions.map(p => p.name)) || '')
-    .filter(item => item !== '')
-    .join(',')
-    .split(',');
+    permission = user.roles
+      .map(item => (item.permissions && item.permissions.map(p => p.name)) || '')
+      .filter(item => item !== '')
+      .join(',')
+      .split(',');
   }
- 
+
   return Object.assign(new AuthUser(), user, { roles, permission });
 };
 
-export { userTramsforAuthUser };
+export const userUtil = { userTramsforAuthUser };

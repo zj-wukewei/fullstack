@@ -1,41 +1,38 @@
 import { UseGuards } from '@nestjs/common';
+import { Int } from 'type-graphql';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Role as RoleEntity } from './entity/role.entity';
-import { Role } from './model/role';
+import { Role, RolesPagination } from './model';
 import { RoleService } from './role.service';
-import { RolePageInfo } from './model/role-page';
-import RolePageArgs from './dto/role-page-args';
-import { AuthRolesGuard } from '../../common/auth/auth-guard';
-import { GqlAuthGuard } from '../../common/auth/gql.auth.guard';
-import { Permissions } from '../../common/auth/permissions-decorators';
-import { NewRoleInput } from './dto/new-role-input';
-import { UpdateRoleInput } from './dto/update-role-input';
-import { Int } from 'type-graphql';
+import { CurrentUser } from '../../common/auth/create.param.decorator';
+import { AuthRolesGuard, GqlAuthGuard, Permissions } from '../../common/auth';
+import { NewRoleInput, RolePageArgs, UpdateRoleInput } from './dto';
+import { AuthUser } from '../auth/models/auth-user';
 
 @Resolver(of => Role)
 export class RoleResolver {
   constructor(private readonly roleService: RoleService) {}
 
-  @Query(returns => RolePageInfo)
+  @Query(() => RolesPagination)
   @UseGuards(GqlAuthGuard, AuthRolesGuard)
   @Permissions('ROLE_SELECT')
-  async roles(@Args() args: RolePageArgs): Promise<RolePageInfo> {
+  async roles(@Args() args: RolePageArgs): Promise<RolesPagination> {
     return await this.roleService.roles(args);
   }
 
-  @Query(returns => Role)
+  @Query(() => Role)
   async role(@Args({ name: 'id', type: () => Int }) id: number): Promise<RoleEntity> {
     return await this.roleService.role(id);
   }
 
-  @Mutation(returns => Role)
+  @Mutation(() => Role)
   @UseGuards(GqlAuthGuard, AuthRolesGuard)
   @Permissions('ROLE_CREATE')
-  async addRole(@Args('newRoleData') newRoleData: NewRoleInput): Promise<RoleEntity> {
-    return await this.roleService.addRole(newRoleData);
+  async createRole(@Args('newRoleData') newRoleData: NewRoleInput): Promise<RoleEntity> {
+    return await this.roleService.createRole(newRoleData);
   }
 
-  @Mutation(returns => Role)
+  @Mutation(() => Role)
   @UseGuards(GqlAuthGuard, AuthRolesGuard)
   @Permissions('ROLE_UPDATE')
   async updateRole(
@@ -43,5 +40,15 @@ export class RoleResolver {
     @Args('updateRoleData') updateRoleInput: UpdateRoleInput,
   ): Promise<RoleEntity> {
     return await this.roleService.updateRole(id, updateRoleInput);
+  }
+
+  @Mutation(() => Role)
+  @UseGuards(GqlAuthGuard, AuthRolesGuard)
+  @Permissions('ROLE_DELETE')
+  async deleteRole(
+    @Args({ name: 'id', type: () => Int }) id: number,
+    @CurrentUser() user: AuthUser,
+  ): Promise<RoleEntity | undefined> {
+    return this.roleService.deleteRole(id, user);
   }
 }

@@ -2,13 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { CustomRoleRepository } from './role.repository';
 import { Role } from './entity/role.entity';
 import { User } from '../user/entity/user.entity';
-import BasePageArgs from '../../common/page/base-page-args';
 import { paginate, Pagination } from '../../common/page';
-import { NewRoleInput } from './dto/new-role-input';
+import { NewRoleInput, RolePageArgs, UpdateRoleInput } from './dto';
 import { PermissionService } from '../permission/permission.service';
-import { UpdateRoleInput } from './dto/update-role-input';
 import { Permission } from '../permission/entity/permission.entity';
-import { errorUtil } from '../../utils/error.utils';
+import { errorUtil, curdUtil } from '../../utils';
+import { AuthUser } from '../auth/models/auth-user';
 
 const CLS_NAME = 'RoleService';
 
@@ -23,7 +22,7 @@ export class RoleService {
     );
   }
 
-  async roles(args: BasePageArgs): Promise<Pagination<Role>> {
+  async roles(args: RolePageArgs): Promise<Pagination<Role>> {
     return await paginate(this.roleRepository, { pageNumber: args.pn, pageSize: args.ps }, { order: { createDate: 'DESC' } });
   }
 
@@ -31,7 +30,7 @@ export class RoleService {
     return await this.roleRepository.findOne(id, { relations: ['permissions'] });
   }
 
-  async addRole(args: NewRoleInput): Promise<Role> {
+  async createRole(args: NewRoleInput): Promise<Role> {
     return this.roleRepository.save({
       ...args,
       createDate: new Date(),
@@ -55,5 +54,9 @@ export class RoleService {
       ...args,
       ...relationArgs,
     });
+  }
+
+  async deleteRole(id: number, user: AuthUser): Promise<Role | undefined> {
+    return curdUtil.commonDelete(this.roleRepository, CLS_NAME, id, user);
   }
 }

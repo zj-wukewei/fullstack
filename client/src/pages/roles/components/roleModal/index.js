@@ -3,10 +3,10 @@ import { Modal, Form, Input } from 'antd';
 const RoleModal = props => {
   const { getFieldDecorator } = props.form;
   const handleOnOk = () => {
-    const { form, addRole } = props;
+    const { form, createRole } = props;
     form.validateFields(async (err, values) => {
       if (!err) {
-        addRole({ variables: { name: values.name, describe: values.describe } });
+        createRole({ variables: { name: values.name, describe: values.describe } });
       }
     });
   };

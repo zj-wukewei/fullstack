@@ -31,8 +31,8 @@ const EXCHANGE_USERS_PAGE = gql`
 `;
 
 const CREATE_USER = gql`
-  mutation addUser($phone: String!) {
-    addUser(newUserData: { phone: $phone }) {
+  mutation createUser($phone: String!) {
+    createUser(newUserData: { phone: $phone }) {
       id
       phone
       createDate
@@ -84,7 +84,7 @@ const Users = () => {
     });
   }, [subscribeToMore]);
 
-  const [addUser, { loading: addLoading }] = useMutation(CREATE_USER, {
+  const [createUser, { loading: addLoading }] = useMutation(CREATE_USER, {
     onCompleted() {
       userModel.closeModal();
     },
@@ -136,7 +136,7 @@ const Users = () => {
         }}
       />
 
-      <UserModal loading={addLoading} {...userModel} addUser={addUser} />
+      <UserModal loading={addLoading} {...userModel} createUser={createUser} />
     </div>
   );
 };

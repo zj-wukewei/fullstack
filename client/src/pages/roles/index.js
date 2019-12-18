@@ -30,8 +30,8 @@ const ROLES_PAGE = gql`
 `;
 
 const ADD_ROLE = gql`
-  mutation addRole($name: String!, $describe: String) {
-    addRole(newRoleData: { name: $name, describe: $describe }) {
+  mutation createRole($name: String!, $describe: String) {
+    createRole(newRoleData: { name: $name, describe: $describe }) {
       id
       name
       describe
@@ -75,7 +75,7 @@ const Roles = () => {
 
   const roleModel = useModal();
 
-  const [addRole, { loading: addLoading }] = useMutation(ADD_ROLE, {
+  const [createRole, { loading: addLoading }] = useMutation(ADD_ROLE, {
     onCompleted() {
       roleModel.closeModal();
     },
@@ -105,7 +105,7 @@ const Roles = () => {
         }}
       />
 
-      <RoleModal loading={addLoading} {...roleModel} addRole={addRole} />
+      <RoleModal loading={addLoading} {...roleModel} createRole={createRole} />
     </div>
   );
 };

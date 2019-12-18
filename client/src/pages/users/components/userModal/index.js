@@ -3,10 +3,10 @@ import { Modal, Form, Input, Icon } from 'antd';
 const UserModal = props => {
   const { getFieldDecorator } = props.form;
   const handleOnOk = () => {
-    const { form, addUser } = props;
+    const { form, createUser } = props;
     form.validateFields(async (err, values) => {
       if (!err) {
-        addUser({ variables: { phone: values.phone } });
+        createUser({ variables: { phone: values.phone } });
       }
     });
   };

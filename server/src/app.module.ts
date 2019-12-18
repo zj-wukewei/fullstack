@@ -10,7 +10,7 @@ import { ConfigModule } from './modules/config/config.module';
 import { DateScalar } from './common/scalars/data.scalar';
 
 import UnauthorizedExceptionFilter from './common/filter/unauthorizd-exception-filter';
-import { loggerUtil } from './utils/logger.utils';
+import { loggerUtil } from './utils';
 
 @Module({
   imports: [

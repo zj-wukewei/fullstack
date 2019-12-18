@@ -1,20 +1,14 @@
 import { ParseIntPipe, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
-import { User } from './models/user';
+import { User, UsersPagination } from './models';
 import { User as UserEntity } from './entity/user.entity';
 import { AuthUser } from '../auth/models/auth-user';
-import { NewUserInput } from './dto/new-user.input';
+import { NewUserInput, UpdateUserInfo } from './dto';
 import { UserService } from './user.service';
-import { AuthRolesGuard } from '../../common/auth/auth-guard';
-import { GqlAuthGuard } from '../../common/auth/gql.auth.guard';
-import { CurrentUser } from '../../common/auth/create.param.decorator';
+import { AuthRolesGuard, GqlAuthGuard, CurrentUser, Permissions } from '../../common/auth';
 import BasePageArgs from '../../common/page/base-page-args';
-import { UserPageInfo } from './models/user-page';
-import { Permissions } from '../../common/auth/permissions-decorators';
-import { UpdateUserInfo } from './dto/update-user-info-input';
-import { UserInfo } from './entity/user.info.entity';
-import { userTramsforAuthUser } from '../../utils/user.utils';
+import { userUtil } from '../../utils/';
 
 const pubSub = new PubSub();
 
@@ -27,10 +21,10 @@ export class UsersResolvers {
     return await this.userService.findAll();
   }
 
-  @Query(returns => UserPageInfo)
+  @Query(returns => UsersPagination)
   @UseGuards(GqlAuthGuard, AuthRolesGuard)
   @Permissions('USER_SELECT')
-  async usersPage(@Args() args: BasePageArgs): Promise<UserPageInfo> {
+  async usersPage(@Args() args: BasePageArgs): Promise<UsersPagination> {
     return await this.userService.users(args);
   }
 
@@ -46,13 +40,13 @@ export class UsersResolvers {
   @UseGuards(GqlAuthGuard)
   async whoAmI(@CurrentUser() user: AuthUser): Promise<AuthUser> {
     const userEntity = await this.userService.findOneByPhone(user.phone);
-    return userTramsforAuthUser(userEntity);
+    return userUtil.userTramsforAuthUser(userEntity);
   }
 
   @Mutation(returns => User)
   @UseGuards(GqlAuthGuard, AuthRolesGuard)
   @Permissions('USER_CREATE')
-  async addUser(@Args('newUserData') newUserData: NewUserInput): Promise<UserEntity> {
+  async createUser(@Args('newUserData') newUserData: NewUserInput): Promise<UserEntity> {
     const createdUser = await this.userService.create(newUserData);
     pubSub.publish('userCreated', { userCreated: createdUser });
     return createdUser;
@@ -61,15 +55,7 @@ export class UsersResolvers {
   @Mutation(returns => User)
   @UseGuards(GqlAuthGuard)
   async updateUserInfo(@CurrentUser() current: AuthUser, @Args('updateUserInfo') info: UpdateUserInfo): Promise<UserEntity> {
-    const user = new UserEntity();
-    user.id = current.id;
-    const updateInfo = Object.assign(new UserInfo(), info);
-    if (current.info) {
-      // 有就是更新
-      updateInfo.id = current.info.id;
-    }
-    updateInfo.createDate = new Date();
-    return await this.userService.updateUserInfo(user, updateInfo);
+    return await this.userService.updateUserInfo(current, info);
   }
 
   @Subscription(returns => User)
