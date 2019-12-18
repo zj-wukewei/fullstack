@@ -38,9 +38,10 @@ export class RoleResolver {
   @Mutation(returns => Role)
   @UseGuards(GqlAuthGuard, AuthRolesGuard)
   @Permissions('ROLE_UPDATE')
-  async updateRole( @Args({ name: 'id', type: () => Int }) id: number, @Args('updateRoleData') updateRoleInput: UpdateRoleInput): Promise<RoleEntity> {
+  async updateRole(
+    @Args({ name: 'id', type: () => Int }) id: number,
+    @Args('updateRoleData') updateRoleInput: UpdateRoleInput,
+  ): Promise<RoleEntity> {
     return await this.roleService.updateRole(id, updateRoleInput);
   }
-
-  
 }

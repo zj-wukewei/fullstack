@@ -26,19 +26,11 @@ const RoleModal = props => {
         <Form.Item label="角色名">
           {getFieldDecorator('name', {
             rules: [{ required: true, message: '请输入角色名!' }],
-          })(
-            <Input
-              placeholder="name"
-            />,
-          )}
+          })(<Input placeholder="name" />)}
         </Form.Item>
 
         <Form.Item label="描述">
-          {getFieldDecorator('describe')(
-            <Input
-              placeholder="describe"
-            />,
-          )}
+          {getFieldDecorator('describe')(<Input placeholder="describe" />)}
         </Form.Item>
       </Form>
     </Modal>

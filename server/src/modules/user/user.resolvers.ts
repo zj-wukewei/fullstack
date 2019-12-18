@@ -65,7 +65,7 @@ export class UsersResolvers {
     user.id = current.id;
     const updateInfo = Object.assign(new UserInfo(), info);
     if (current.info) {
-      //有就是更新
+      // 有就是更新
       updateInfo.id = current.info.id;
     }
     updateInfo.createDate = new Date();

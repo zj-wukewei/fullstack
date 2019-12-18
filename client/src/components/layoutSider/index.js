@@ -46,16 +46,27 @@ const renderMenuItem = (subMenu, permission) => {
 };
 
 const LayoutSider = props => {
-  const { collapsed, permission, match: { url } } = props;
-  const find = masterRoute.find(subMenu => subMenu.children.find(menu => url.startsWith(menu.path)));
+  const {
+    collapsed,
+    permission,
+    match: { url },
+  } = props;
+  const find = masterRoute.find(subMenu =>
+    subMenu.children.find(menu => url.startsWith(menu.path)),
+  );
   const uiOpenKeys = find ? find.path || '' : '';
   const findChuldren = find && find.children.find(item => url.startsWith(item.path));
-  const uiSelectKey = findChuldren && findChuldren.path
+  const uiSelectKey = findChuldren && findChuldren.path;
 
   return (
     <Sider collapsedWidth={0} trigger={null} collapsible collapsed={collapsed}>
       <div className="logo" />
-      <Menu theme="dark" mode="inline" defaultOpenKeys={[uiOpenKeys]} defaultSelectedKeys={[uiSelectKey]} >
+      <Menu
+        theme="dark"
+        mode="inline"
+        defaultOpenKeys={[uiOpenKeys]}
+        defaultSelectedKeys={[uiSelectKey]}
+      >
         {permission && renderSubMenu(permission)}
       </Menu>
     </Sider>

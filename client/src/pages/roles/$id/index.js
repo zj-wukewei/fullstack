@@ -28,7 +28,7 @@ const RoleDetail = props => {
   const {
     params: { id },
   } = props.match;
-  
+
   const { getFieldDecorator } = props.form;
 
   const { data, loading } = useQuery(ROLE, {

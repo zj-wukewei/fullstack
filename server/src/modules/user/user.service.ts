@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './entity/user.entity';
 import { CustomUserRepository } from './user.repository';
-import { CommonException } from '../../common/exception/common-exception';
 import BasePageArgs from '../../common/page/base-page-args';
 import { paginate, Pagination } from '../../common/page';
 import { RoleService } from '../role/role.service';
@@ -23,7 +22,7 @@ export class UserService {
   async create(user: NewUserInput): Promise<User> {
     const findUser = await this.userRepository.findOneByPhone(user.phone);
     if (findUser) {
-      return errorUtil.ERROR({ error: "用户已存在" });
+      return errorUtil.ERROR({ error: '用户已存在' });
     }
     return await this.userRepository.save({
       ...user,

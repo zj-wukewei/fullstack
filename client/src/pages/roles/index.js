@@ -40,7 +40,6 @@ const ADD_ROLE = gql`
   }
 `;
 
-
 const Roles = () => {
   const { ps, pn, handleOnChange, pagination } = useTable();
 
@@ -77,15 +76,17 @@ const Roles = () => {
   const roleModel = useModal();
 
   const [addRole, { loading: addLoading }] = useMutation(ADD_ROLE, {
-    onCompleted() { 
-      roleModel.closeModal();       
-    }
+    onCompleted() {
+      roleModel.closeModal();
+    },
   });
 
   return (
     <div>
-       <Authorize match={'ROLE_CREATE'}>
-        <Button type="primary" onClick={() =>  roleModel.openModal()}>添加</Button>
+      <Authorize match={'ROLE_CREATE'}>
+        <Button type="primary" onClick={() => roleModel.openModal()}>
+          添加
+        </Button>
       </Authorize>
       <Table
         rowKey="id"
@@ -96,7 +97,7 @@ const Roles = () => {
         loading={loading}
         onChange={handleOnChange}
         onRowClick={record => {
-          router.push(`roles/${record.id}`)
+          router.push(`roles/${record.id}`);
         }}
         pagination={{
           total: roles.totalSize,
@@ -104,7 +105,7 @@ const Roles = () => {
         }}
       />
 
-      <RoleModal loading={addLoading} {...roleModel} addRole={addRole}  />
+      <RoleModal loading={addLoading} {...roleModel} addRole={addRole} />
     </div>
   );
 };

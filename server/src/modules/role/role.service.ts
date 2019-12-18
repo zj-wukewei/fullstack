@@ -5,17 +5,16 @@ import { User } from '../user/entity/user.entity';
 import BasePageArgs from '../../common/page/base-page-args';
 import { paginate, Pagination } from '../../common/page';
 import { NewRoleInput } from './dto/new-role-input';
-import { PermissionService } from '../permission/permission.service'
+import { PermissionService } from '../permission/permission.service';
 import { UpdateRoleInput } from './dto/update-role-input';
 import { Permission } from '../permission/entity/permission.entity';
-import { CommonException } from '../../common/exception/common-exception';
 import { errorUtil } from '../../utils/error.utils';
 
-const CLS_NAME = "RoleService";
+const CLS_NAME = 'RoleService';
 
 @Injectable()
 export class RoleService {
-  constructor(private readonly roleRepository: CustomRoleRepository, private readonly permissionService: PermissionService,) {}
+  constructor(private readonly roleRepository: CustomRoleRepository, private readonly permissionService: PermissionService) {}
 
   async findByIds(user: User): Promise<Role[]> {
     return await this.roleRepository.findByIds(
@@ -29,7 +28,7 @@ export class RoleService {
   }
 
   async role(id: number): Promise<Role> {
-    return await this.roleRepository.findOne(id, { relations: ['permissions'] })
+    return await this.roleRepository.findOne(id, { relations: ['permissions'] });
   }
 
   async addRole(args: NewRoleInput): Promise<Role> {
@@ -42,10 +41,10 @@ export class RoleService {
   async updateRole(id: number, args: UpdateRoleInput): Promise<Role> {
     const find = await this.roleRepository.findOne(id);
     if (!find) {
-      return errorUtil.ERROR({ error: { message: "role没找到", CLS_NAME }  })
+      return errorUtil.ERROR({ error: { message: 'role没找到', CLS_NAME } });
     }
-    let relationArgs: { permissions?: Permission[] }  = {};
-    if (args.permissionIds &&  Array.isArray(args.permissionIds)) {
+    let relationArgs: { permissions?: Permission[] } = {};
+    if (args.permissionIds && Array.isArray(args.permissionIds)) {
       const permissions = await this.permissionService.findPermissionsByIds(args.permissionIds);
       if (permissions) {
         relationArgs.permissions = permissions;
@@ -54,7 +53,7 @@ export class RoleService {
     return await this.roleRepository.save({
       ...find,
       ...args,
-      ...relationArgs
+      ...relationArgs,
     });
   }
 }

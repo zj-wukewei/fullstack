@@ -25,9 +25,9 @@ import { loggerUtil } from './utils/logger.utils';
       autoSchemaFile: 'schema.gql',
       installSubscriptionHandlers: true,
       formatError(error: any) {
-        loggerUtil.error(`${JSON.stringify(error)}\n`, 'GraphQLModule')
+        loggerUtil.error(`${JSON.stringify(error)}\n`, 'GraphQLModule');
         return error;
-      }
+      },
     }),
   ],
   providers: [

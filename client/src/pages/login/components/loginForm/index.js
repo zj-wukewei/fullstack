@@ -14,11 +14,9 @@ const LoginForm = props => {
       }
     });
   };
-  
 
   return (
     <div className="login-container">
-
       <h1>Nest.js-Graphql-Typeorpm-Apollo学习</h1>
 
       <Form onSubmit={handleSubmit} className="login-form">
@@ -52,14 +50,14 @@ const LoginForm = props => {
           Log in
         </Button>
 
-        {
-          props.error && (
-          <div className="error">{props.error.graphQLErrors[0] && 
-            props.error.graphQLErrors[0].message && props.error.graphQLErrors[0].message.message || "未知错误"}</div>
-          )
-        }
-
-
+        {props.error && (
+          <div className="error">
+            {(props.error.graphQLErrors[0] &&
+              props.error.graphQLErrors[0].message &&
+              props.error.graphQLErrors[0].message.message) ||
+              '未知错误'}
+          </div>
+        )}
       </Form>
     </div>
   );

@@ -52,7 +52,11 @@ function BasicLayout(props) {
   return (
     <Spin spinning={loading} tip="初始化中...">
       <Layout>
-        <LayoutSider collapsed={collapsed} match={props.match} permission={data && data && data.whoAmI && data.whoAmI.permission} />
+        <LayoutSider
+          collapsed={collapsed}
+          match={props.match}
+          permission={data && data && data.whoAmI && data.whoAmI.permission}
+        />
 
         <Layout className="layout">
           <Header style={{ background: '#fff', padding: 0 }}>
