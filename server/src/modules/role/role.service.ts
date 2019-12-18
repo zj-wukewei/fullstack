@@ -13,7 +13,10 @@ const CLS_NAME = 'RoleService';
 
 @Injectable()
 export class RoleService {
-  constructor(private readonly roleRepository: CustomRoleRepository, private readonly permissionService: PermissionService) {}
+  constructor(
+    private readonly roleRepository: CustomRoleRepository,
+    private readonly permissionService: PermissionService,
+  ) {}
 
   async findByIds(user: User): Promise<Role[]> {
     return await this.roleRepository.findByIds(
@@ -23,7 +26,11 @@ export class RoleService {
   }
 
   async roles(args: RolePageArgs): Promise<Pagination<Role>> {
-    return await paginate(this.roleRepository, { pageNumber: args.pn, pageSize: args.ps }, { order: { createDate: 'DESC' } });
+    return await paginate(
+      this.roleRepository,
+      { pageNumber: args.pn, pageSize: args.ps },
+      { order: { createDate: 'DESC' } },
+    );
   }
 
   async role(id: number): Promise<Role> {
@@ -42,7 +49,7 @@ export class RoleService {
     if (!find) {
       return errorUtil.ERROR({ error: { message: 'role没找到', CLS_NAME } });
     }
-    let relationArgs: { permissions?: Permission[] } = {};
+    const relationArgs: { permissions?: Permission[] } = {};
     if (args.permissionIds && Array.isArray(args.permissionIds)) {
       const permissions = await this.permissionService.findPermissionsByIds(args.permissionIds);
       if (permissions) {

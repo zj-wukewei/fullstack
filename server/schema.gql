@@ -29,7 +29,13 @@ type Mutation {
   createRole(newRoleData: NewRoleInput!): Role!
   updateRole(updateRoleData: UpdateRoleInput!, id: Int!): Role!
   deleteRole(id: Int!): Role!
+  createPermission(newPermissionData: NewPermissionInput!): Permission!
   login(phone: String!, password: String!): Auth!
+}
+
+input NewPermissionInput {
+  name: String!
+  alias: String!
 }
 
 input NewRoleInput {
