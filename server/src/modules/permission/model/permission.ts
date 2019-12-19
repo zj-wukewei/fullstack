@@ -11,6 +11,9 @@ export class Permission {
   @Field()
   name: string;
 
+  @Field()
+  group: string;
+
   @Field(type => Date)
   createDate: Date;
 }

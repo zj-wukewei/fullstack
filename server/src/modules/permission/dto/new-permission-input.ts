@@ -9,4 +9,7 @@ export class NewPermissionInput {
 
   @Field(type => String)
   alias: string;
+
+  @Field(type => String)
+  group: string;
 }

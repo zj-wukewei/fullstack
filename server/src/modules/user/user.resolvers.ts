@@ -54,7 +54,10 @@ export class UsersResolvers {
 
   @Mutation(returns => User)
   @UseGuards(GqlAuthGuard)
-  async updateUserInfo(@CurrentUser() current: AuthUser, @Args('updateUserInfo') info: UpdateUserInfo): Promise<UserEntity> {
+  async updateUserInfo(
+    @CurrentUser() current: AuthUser,
+    @Args('updateUserInfo') info: UpdateUserInfo,
+  ): Promise<UserEntity> {
     return await this.userService.updateUserInfo(current, info);
   }
 

@@ -36,6 +36,7 @@ type Mutation {
 input NewPermissionInput {
   name: String!
   alias: String!
+  group: String!
 }
 
 input NewRoleInput {
@@ -51,6 +52,7 @@ type Permission {
   id: ID!
   alias: String!
   name: String!
+  group: String!
   createDate: Date!
 }
 

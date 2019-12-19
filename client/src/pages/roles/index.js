@@ -2,10 +2,9 @@ import Authorize, { authorize } from '../../components/authorize';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { RolePagePermission } from '../../configs/router';
 import gql from 'graphql-tag';
-import useTable from '../../hooks/useTable';
 import { Table, Button } from 'antd';
 import { dataFormat } from '../../utils';
-import useModal from '../../hooks/useModal';
+import { useModal, useTable } from '../../hooks';
 import RoleModal from './components/roleModal';
 import router from 'umi/router';
 

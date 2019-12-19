@@ -6,9 +6,8 @@ import Authorize, { authorize } from '../../components/authorize';
 
 import { dataFormat } from '../../utils';
 import { gql } from 'apollo-boost';
-import useModal from '../../hooks/useModal';
 import UserModal from './components/userModal';
-import useTable from '../../hooks/useTable';
+import { useModal, useTable } from '../../hooks';
 import { UserPagePermission } from '../../configs/router';
 
 const EXCHANGE_USERS_PAGE = gql`

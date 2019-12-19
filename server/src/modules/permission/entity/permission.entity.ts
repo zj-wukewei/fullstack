@@ -11,6 +11,9 @@ export class Permission {
   @Column()
   name: string;
 
+  @Column()
+  group: string;
+
   @Column('datetime')
   createDate: Date;
 }

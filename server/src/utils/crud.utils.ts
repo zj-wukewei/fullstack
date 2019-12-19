@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 import { loggerUtil } from './logger.utils';
-import { AuthUser } from 'src/modules/auth/models/auth-user';
+import { AuthUser } from '../modules/auth/models/auth-user';
 
 const commonDelete = async (
   repository: Repository<any>,
