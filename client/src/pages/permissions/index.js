@@ -5,8 +5,9 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { dataFormat } from '../../utils';
 import { Table, Button } from 'antd';
+import PermissionModal from './components/permissionModal';
 
-const ROLES_PAGE = gql`
+const PERMISSION_PAGE = gql`
   query PermissionsPage($ps: Int!, $pn: Int!) {
     permissions(ps: $ps, pn: $pn) {
       totalSize
@@ -21,10 +22,22 @@ const ROLES_PAGE = gql`
   }
 `;
 
+const ADD_PERMISSION = gql`
+  mutation createPermission($name: String!, $alias: String, $group: String!) {
+    createPermission(newPermissionData: { name: $name, alias: $alias, group: $group }) {
+      id
+      name
+      alias
+      group
+      createDate
+    }
+  }
+`;
+
 const Permission = () => {
   const { ps, pn, handleOnChange, pagination } = useTable();
 
-  const { data, loading } = useQuery(ROLES_PAGE, {
+  const { data, loading } = useQuery(PERMISSION_PAGE, {
     variables: { ps, pn },
   });
 
@@ -57,12 +70,20 @@ const Permission = () => {
     },
   ];
 
+  const [createPermission, { loading: addLoading }] = useMutation(ADD_PERMISSION, {
+    onCompleted() {
+      permissionModel.closeModal();
+    },
+    refetchQueries: () => [{ query: PERMISSION_PAGE, variables: { pn, ps } }],
+  });
+
   const permissions = (data && data.permissions) || { totalSize: 0, list: [] };
 
+  const permissionModel = useModal();
   return (
     <div>
       <Authorize match={'PERMISSION_CREATE'}>
-        <Button type="primary" onClick={() => null}>
+        <Button type="primary" onClick={() => permissionModel.openModal()}>
           添加
         </Button>
       </Authorize>
@@ -78,6 +99,12 @@ const Permission = () => {
           total: permissions.totalSize,
           ...pagination,
         }}
+      />
+
+      <PermissionModal
+        loading={addLoading}
+        {...permissionModel}
+        createPermission={createPermission}
       />
     </div>
   );

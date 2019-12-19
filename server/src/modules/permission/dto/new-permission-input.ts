@@ -7,8 +7,8 @@ export class NewPermissionInput {
   @IsNotEmpty({ message: 'name不能为空' })
   name: string;
 
-  @Field(type => String)
-  alias: string;
+  @Field(type => String, { nullable: true })
+  alias?: string;
 
   @Field(type => String)
   group: string;

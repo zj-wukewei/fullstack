@@ -4,8 +4,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Role as RoleEntity } from './entity/role.entity';
 import { Role, RolesPagination } from './model';
 import { RoleService } from './role.service';
-import { CurrentUser } from '../../common/auth/create.param.decorator';
-import { AuthRolesGuard, GqlAuthGuard, Permissions } from '../../common/auth';
+import { AuthRolesGuard, GqlAuthGuard, Permissions, CurrentUser } from '../../common/auth';
 import { NewRoleInput, RolePageArgs, UpdateRoleInput } from './dto';
 import { AuthUser } from '../auth/models/auth-user';
 

@@ -59,6 +59,7 @@ const RoleDetail = props => {
 
   const { data, loading } = useQuery(ROLE, {
     variables: { id: Number(id) },
+    fetchPolicy: 'network-only',
   });
 
   const [updateRole, { loading: updateRoleLoading }] = useMutation(UPDATE_ROLE, {
@@ -116,7 +117,7 @@ const RoleDetail = props => {
           {getFieldDecorator('permissionIds', {
             initialValue: _.map(role.permissions, item => Number(item.id)),
           })(
-            <Checkbox.Group>
+            <Checkbox.Group style={{ width: '100%' }}>
               {_.map(permissionsGroup, (pg, key) => (
                 <div key={key} className="permission-group">
                   <div className="permission-header">{key}</div>
@@ -132,7 +133,7 @@ const RoleDetail = props => {
                   </Row>
                 </div>
               ))}
-            </Checkbox.Group>
+            </Checkbox.Group>,
           )}
         </FormCard>
         <Button loading={updateRoleLoading} onClick={handleOnUpdate} type="primary">

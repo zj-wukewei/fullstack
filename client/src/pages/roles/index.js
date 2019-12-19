@@ -78,6 +78,7 @@ const Roles = () => {
     onCompleted() {
       roleModel.closeModal();
     },
+    refetchQueries: () => [{ query: ROLES_PAGE, variables: { pn, ps } }],
   });
 
   return (
