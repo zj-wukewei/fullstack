@@ -1,4 +1,4 @@
-import { Authorize, authorize } from '../../components';
+import { Authorize, authorize, TableColumsDelete } from '../../components';
 import { PermissionPagePermission } from '../../configs/router';
 import { useModal, useTable } from '../../hooks';
 import { useQuery, useMutation } from '@apollo/react-hooks';
@@ -22,6 +22,14 @@ const PERMISSION_PAGE = gql`
   }
 `;
 
+const DELETE_PERMISSION = gql`
+  mutation deletePermission($id: Int!) {
+    deletePermission(id: $id) {
+      id
+    }
+  }
+`;
+
 const ADD_PERMISSION = gql`
   mutation createPermission($name: String!, $alias: String, $group: String!) {
     createPermission(newPermissionData: { name: $name, alias: $alias, group: $group }) {
@@ -39,6 +47,10 @@ const Permission = () => {
 
   const { data, loading } = useQuery(PERMISSION_PAGE, {
     variables: { ps, pn },
+  });
+
+  const [deletePermission] = useMutation(DELETE_PERMISSION, {
+    refetchQueries: () => [{ query: PERMISSION_PAGE, variables: { pn, ps } }],
   });
 
   const columns = [
@@ -67,6 +79,17 @@ const Permission = () => {
       dataIndex: 'createDate',
       key: 'createDate',
       render: text => dataFormat(text),
+    },
+    {
+      title: '操作',
+      dataIndex: 'operation',
+      key: 'operation',
+      render: (text, record) => (
+        <TableColumsDelete
+          id={record.id}
+          onClick={async () => deletePermission({ variables: { id: Number(record.id) } })}
+        />
+      ),
     },
   ];
 
