@@ -1,21 +1,21 @@
 {
-    "name": "@users/common",
-    "author": "",
-    "version": "0.0.1",
-    "private": false,
-    "sideEffect": false,
-    "license": "",
-    "engines": {
-        "node": ">=10.13.0",
-        "npm": ">=6.4.0"
-    },
-    "scripts": {
-        "lint-js": "eslint \"src/**/*.{ts,tsx}\"",
-        "fix-js": "yarn run lint-js --fix",
-        "lint": "yarn run lint-js",
-        "fix": "yarn run fix-js",
-        "tsc-check": "tsc --noEmit",
-        "build": "tsc"
-    },
-    "devDependencies": {}
+  "name": "@users/common",
+  "author": "wukewei <565389849@qq.com>",
+  "version": "0.0.1",
+  "private": false,
+  "sideEffect": false,
+  "license": "",
+  "engines": {
+    "node": ">=10.13.0",
+    "npm": ">=6.4.0"
+  },
+  "scripts": {
+    "lint-js": "eslint \"src/**/*.{ts,tsx}\"",
+    "fix-js": "yarn run lint-js --fix",
+    "lint": "yarn run lint-js",
+    "fix": "yarn run fix-js",
+    "tsc-check": "tsc --noEmit",
+    "build": "tsc"
+  },
+  "devDependencies": {}
 }
