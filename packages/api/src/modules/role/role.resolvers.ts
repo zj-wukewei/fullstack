@@ -9,6 +9,7 @@ import { AuthRolesGuard, GqlAuthGuard, Permissions, CurrentUser } from '../../co
 import { Pagination } from '../../common/page';
 
 @Resolver(() => Role)
+@UseGuards(GqlAuthGuard)
 export class RoleResolver {
   constructor(private readonly roleService: RoleService) {}
 

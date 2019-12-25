@@ -14,6 +14,7 @@ import { Pagination } from '../../common/page';
 const pubSub = new PubSub();
 
 @Resolver(() => User)
+@UseGuards(GqlAuthGuard)
 export class UsersResolvers {
   constructor(private readonly userService: UserService) {}
 

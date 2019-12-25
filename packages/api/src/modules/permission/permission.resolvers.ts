@@ -8,6 +8,7 @@ import { PermissionService } from './permission.service';
 import { AuthRolesGuard, GqlAuthGuard, Permissions, CurrentUser } from '../../common/auth';
 
 @Resolver(() => Permission)
+@UseGuards(GqlAuthGuard)
 export class PermissionResolver {
   constructor(private readonly permissionService: PermissionService) {}
 
