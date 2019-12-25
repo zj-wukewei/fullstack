@@ -9,6 +9,7 @@ import { NewRoleInput, RolePageArgs, UpdateRoleInput } from './dto';
 import { AuthUser } from '../auth/models/auth-user';
 
 @Resolver(of => Role)
+@UseGuards(GqlAuthGuard)
 export class RoleResolver {
   constructor(private readonly roleService: RoleService) {}
 

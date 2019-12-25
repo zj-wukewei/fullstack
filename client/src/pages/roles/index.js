@@ -2,7 +2,7 @@ import Authorize, { authorize } from '../../components/authorize';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { RolePagePermission } from '../../configs/router';
 import gql from 'graphql-tag';
-import { Table, Button } from 'antd';
+import { Table, Button, message } from 'antd';
 import { dataFormat } from '../../utils';
 import { useModal, useTable } from '../../hooks';
 import RoleModal from './components/roleModal';
@@ -77,6 +77,7 @@ const Roles = () => {
   const [createRole, { loading: addLoading }] = useMutation(ADD_ROLE, {
     onCompleted() {
       roleModel.closeModal();
+      message.success('角色添加成功');
     },
     refetchQueries: () => [{ query: ROLES_PAGE, variables: { pn, ps } }],
   });

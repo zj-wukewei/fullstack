@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { Table, Button } from 'antd';
+import { Table, Button, message } from 'antd';
 
 import Authorize, { authorize } from '../../components/authorize';
 
@@ -86,6 +86,7 @@ const Users = () => {
   const [createUser, { loading: addLoading }] = useMutation(CREATE_USER, {
     onCompleted() {
       userModel.closeModal();
+      message.success('用户添加成');
     },
   });
 

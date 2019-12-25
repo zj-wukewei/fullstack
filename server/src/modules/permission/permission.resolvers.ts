@@ -9,6 +9,7 @@ import { PermissionPageArgs, NewPermissionInput } from './dto';
 import { AuthUser } from '../auth/models/auth-user';
 
 @Resolver(of => Permission)
+@UseGuards(GqlAuthGuard)
 export class PermissionResolver {
   constructor(private readonly permissionService: PermissionService) {}
 

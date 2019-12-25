@@ -13,6 +13,7 @@ import { userUtil } from '../../utils/';
 const pubSub = new PubSub();
 
 @Resolver(of => User)
+@UseGuards(GqlAuthGuard)
 export class UsersResolvers {
   constructor(private readonly userService: UserService) {}
 

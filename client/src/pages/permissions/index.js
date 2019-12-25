@@ -4,7 +4,7 @@ import { useModal, useTable } from '../../hooks';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { dataFormat } from '../../utils';
-import { Table, Button } from 'antd';
+import { Table, Button, message } from 'antd';
 import PermissionModal from './components/permissionModal';
 
 const PERMISSION_PAGE = gql`
@@ -50,6 +50,7 @@ const Permission = () => {
   });
 
   const [deletePermission] = useMutation(DELETE_PERMISSION, {
+    onCompleted: () => message.success('权限删除成功'),
     refetchQueries: () => [{ query: PERMISSION_PAGE, variables: { pn, ps } }],
   });
 
@@ -84,7 +85,7 @@ const Permission = () => {
       title: '操作',
       dataIndex: 'operation',
       key: 'operation',
-      render: (text, record) => (
+      render: (_, record) => (
         <TableColumsDelete
           id={record.id}
           onClick={async () => deletePermission({ variables: { id: Number(record.id) } })}
@@ -94,8 +95,9 @@ const Permission = () => {
   ];
 
   const [createPermission, { loading: addLoading }] = useMutation(ADD_PERMISSION, {
-    onCompleted() {
+    onCompleted: () => {
       permissionModel.closeModal();
+      message.success('权限添加成功');
     },
     refetchQueries: () => [{ query: PERMISSION_PAGE, variables: { pn, ps } }],
   });

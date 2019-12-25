@@ -1,4 +1,4 @@
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,7 +8,7 @@ import { RoleModule } from './modules/role/role.module';
 import { PermissionModule } from './modules/permission/permission.module';
 import { ConfigModule } from './modules/config/config.module';
 import { DateScalar } from './common/scalars/data.scalar';
-
+import { AuthRolesGuard, GqlAuthGuard, CurrentUser, Permissions } from './common/auth';
 import UnauthorizedExceptionFilter from './common/filter/unauthorizd-exception-filter';
 import { loggerUtil } from './utils';
 
