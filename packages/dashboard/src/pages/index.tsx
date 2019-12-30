@@ -1,18 +1,21 @@
 import React from 'react';
-import styles from './index.css';
+import Redirect from 'umi/redirect';
+import { useQuery } from '@apollo/react-hooks';
 
-export default function() {
-  return (
-    <div className={styles.normal}>
-      <div className={styles.welcome} />
-      <ul className={styles.list}>
-        <li>To get started, edit <code>src/pages/index.js</code> and save to reload.</li>
-        <li>
-          <a href="https://umijs.org/guide/getting-started.html">
-            Getting Started
-          </a>
-        </li>
-      </ul>
-    </div>
-  );
+import gql from 'graphql-tag';
+
+const IS_LOGGED_IN = gql`
+  query IsUserLoggedIn {
+    isLoggedIn @client
+  }
+`;
+
+interface BasicAppLayoutProps {}
+
+function BasicAppLayout(props: BasicAppLayoutProps) {
+  const { data } = useQuery(IS_LOGGED_IN);
+  const redirect = data.isLoggedIn ? '/home' : '/login';
+  return <Redirect to={redirect} {...props} />;
 }
+
+export default BasicAppLayout;
