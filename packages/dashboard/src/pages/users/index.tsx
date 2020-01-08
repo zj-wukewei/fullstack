@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { gql } from 'apollo-boost';
 
-import { UsersPagination, User, UserInfo } from '@users/common/src/models';
+import { UsersPagination, UserInfo } from '@users/common/src/models';
 import { BasePageArgs, NewUserInput } from '@users/common/src/dto';
 import { useQuery, useMutation, useSubscription } from '@apollo/react-hooks';
 import { Table, Button, message } from 'antd';
