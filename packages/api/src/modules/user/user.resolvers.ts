@@ -2,12 +2,11 @@ import { ParseIntPipe, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { User, UsersPagination, AuthUser } from '@users/common/src/models';
-import { NewUserInput, UpdateUserInfo } from '@users/common/src/dto';
+import { NewUserInput, UpdateUserInfo, BasePageArgs } from '@users/common/src/dto';
 
 import { User as UserEntity } from './entity/user.entity';
 import { UserService } from './user.service';
 import { AuthRolesGuard, GqlAuthGuard, CurrentUser, Permissions } from '../../common/auth';
-import BasePageArgs from '../../common/page/base-page-args';
 import { userUtil } from '../../utils';
 import { Pagination } from '../../common/page';
 

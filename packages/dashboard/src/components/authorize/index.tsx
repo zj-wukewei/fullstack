@@ -28,7 +28,7 @@ const Authorize = (props: AuthorizeProps) => {
   return <>{checkPermission(match, permission) ? props.children : null}</>;
 };
 
-export function authorize(match: string, fallback: React.ReactNode) {
+export function authorize(match: string, fallback?: React.ReactNode) {
   return (WrappedComponent: any) => {
     const ComponentWithPermission = (props: any) => {
       const { loading, data } = useQuery(EXCHANGE_WHOAMI);

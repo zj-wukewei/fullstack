@@ -1,5 +1,7 @@
 export { LoginArgs } from './auth/auth.args';
 
+export { BasePageArgs } from './page/base-page-args';
+
 export { NewUserInput } from './user/new-user.input';
 export { UpdateUserInfo } from './user/update-user-info-input';
 

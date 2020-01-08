@@ -2,7 +2,7 @@ import { IsNotEmpty } from 'class-validator';
 import { Field, ArgsType, Int } from 'type-graphql';
 
 @ArgsType()
-class BasePageArgs {
+export class BasePageArgs {
   @Field(type => Int)
   @IsNotEmpty()
   ps!: number;
@@ -10,6 +10,4 @@ class BasePageArgs {
   @Field(type => Int)
   @IsNotEmpty()
   pn!: number;
-}
-
-export default BasePageArgs;
+};

@@ -1,11 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { AuthUser, UserInfo } from '@users/common/src/models';
+import { NewUserInput, UpdateUserInfo } from '@users/common/src/dto';
+
 import { User } from './entity/user.entity';
 import { CustomUserRepository } from './user.repository';
 import BasePageArgs from '../../common/page/base-page-args';
 import { paginate, Pagination } from '../../common/page';
 import { RoleService } from '../role/role.service';
-import { NewUserInput, UpdateUserInfo } from './dto';
 import { ConfigService } from '../config/config.service';
 import { CustomUserInfoRepository } from './user.info.repository';
 import { errorUtil } from '../../utils';

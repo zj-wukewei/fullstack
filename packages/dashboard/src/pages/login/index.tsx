@@ -17,9 +17,12 @@ const LOGIN_APP = gql`
 `;
 
 const Login = () => {
-  const [submitLoginMutation, { loading, error }] = useMutation<{
-    login: Auth;
-  }>(LOGIN_APP, {
+  const [submitLoginMutation, { loading, error }] = useMutation<
+    {
+      login: Auth;
+    },
+    LoginArgs
+  >(LOGIN_APP, {
     onCompleted({ login }) {
       loginIn(login.accessToken);
       router.push('/');
