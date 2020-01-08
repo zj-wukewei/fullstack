@@ -14,8 +14,8 @@ import { useModal, useTable } from '../../hooks';
 import { UserPagePermission } from '../../configs/router';
 
 const EXCHANGE_USERS_PAGE = gql`
-  query UsersPage($ps: Int!, $pn: Int!) {
-    usersPage(ps: $ps, pn: $pn) {
+  query($ps: Int!, $pn: Int!) {
+    users(ps: $ps, pn: $pn) {
       totalSize
       list {
         id
@@ -63,14 +63,14 @@ const Users = () => {
 
   const { data, loading, subscribeToMore } = useQuery<
     {
-      usersPage: UsersPagination;
+      users: UsersPagination;
     },
     BasePageArgs
   >(EXCHANGE_USERS_PAGE, {
     variables: { ps, pn },
   });
 
-  const users = (data && data.usersPage) || { totalSize: 0, list: [] };
+  const users = (data && data.users) || { totalSize: 0, list: [] };
 
   const userModel = useModal();
 

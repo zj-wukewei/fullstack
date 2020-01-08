@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { AuthUser } from '@users/common/src/models';
+import { NewRoleInput, RolePageArgs, UpdateRoleInput } from '@users/common/src/dto';
+
 import { CustomRoleRepository } from './role.repository';
 import { Role } from './entity/role.entity';
 import { User } from '../user/entity/user.entity';
 import { paginate, Pagination } from '../../common/page';
-import { NewRoleInput, RolePageArgs, UpdateRoleInput } from './dto';
 import { PermissionService } from '../permission/permission.service';
 import { Permission } from '../permission/entity/permission.entity';
 import { errorUtil, curdUtil } from '../../utils';

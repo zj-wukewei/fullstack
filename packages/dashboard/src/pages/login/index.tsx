@@ -25,11 +25,12 @@ const Login = () => {
   >(LOGIN_APP, {
     onCompleted({ login }) {
       loginIn(login.accessToken);
-      router.push('/');
+      router.push('/home');
     },
   });
 
   const handleOnSubmit = (args: LoginArgs) => {
+    console.log(args);
     submitLoginMutation({ variables: args });
   };
 

@@ -16,6 +16,7 @@ const LoginForm = (props: LoginFormProps) => {
   const { getFieldDecorator } = props.form;
 
   const handleSubmit = () => {
+    console.log('handleSubmit');
     props.form.validateFields(async (err, values: LoginArgs) => {
       if (!err) {
         props.login(values);
@@ -27,7 +28,7 @@ const LoginForm = (props: LoginFormProps) => {
     <div className="login-container">
       <h1>Nest.js-Graphql-Typeorpm-Apollo学习</h1>
 
-      <Form onSubmit={handleSubmit} className="login-form">
+      <Form className="login-form">
         <Form.Item>
           {getFieldDecorator('phone', {
             rules: [{ required: true, message: '请输入手机号码!' }],
@@ -44,7 +45,7 @@ const LoginForm = (props: LoginFormProps) => {
             />,
           )}
         </Form.Item>
-        <Button loading={props.loading} type="primary" htmlType="submit" className="login-form-button">
+        <Button onClick={handleSubmit} loading={props.loading} type="primary" className="login-form-button">
           Log in
         </Button>
 

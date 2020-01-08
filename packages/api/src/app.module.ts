@@ -29,8 +29,8 @@ import { loggerUtil } from './utils';
       installSubscriptionHandlers: true,
       formatError(error: any) {
         loggerUtil.error(`${JSON.stringify(error)}\n`, 'GraphQLModule');
-        if (error.message && error.message.error) {
-          return new Error(error.message.error);
+        if (error.message && error.message.message) {
+          return new Error(error.message.message);
         }
         return error;
       },

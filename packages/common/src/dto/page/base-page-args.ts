@@ -10,4 +10,4 @@ export class BasePageArgs {
   @Field(type => Int)
   @IsNotEmpty()
   pn!: number;
-};
+}

@@ -13,7 +13,7 @@ const UserModal: React.SFC<UserModalProps> = props => {
   const { getFieldDecorator } = props.form;
   const handleOnOk = () => {
     const { form, createUser } = props;
-    form.validateFields(async (err, values: NewUserInput) => {
+    form.validateFields((err, values: NewUserInput) => {
       if (!err) {
         createUser(values);
       }
@@ -25,7 +25,7 @@ const UserModal: React.SFC<UserModalProps> = props => {
       title="添加用户"
       destroyOnClose
       visible={props.visible}
-      onOk={handleOnOk}
+      onOk={() => handleOnOk()}
       okText="确定"
       confirmLoading={props.loading}
       cancelText="取消"

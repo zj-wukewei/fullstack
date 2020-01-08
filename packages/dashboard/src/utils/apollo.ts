@@ -51,8 +51,10 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.forEach(error => {
       console.error(`❌ [GraphQL error]: ${JSON.stringify(error)}`);
-      if (error.message === 'Unauthorized') {
+      if (error.message === '身份信息已过期，请重新登录') {
         antdMessage.warn('身份信息已过期，请重新登录', () => loginOut());
+      } else {
+        antdMessage.error(error.message);
       }
     });
   }

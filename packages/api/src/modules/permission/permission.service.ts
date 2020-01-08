@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { AuthUser } from '@users/common/src/models';
+import { PermissionPageArgs, NewPermissionInput } from '@users/common/src/dto';
+
 import { CustomPermissionRepository } from './permission.repository';
 import { Permission } from './entity/permission.entity';
-import { PermissionPageArgs, NewPermissionInput } from './dto';
 import { paginate, Pagination } from '../../common/page';
 import { curdUtil } from '../../utils';
 

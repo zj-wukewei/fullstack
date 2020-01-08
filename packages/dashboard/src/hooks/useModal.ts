@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import useToggle from './useToggle';
 
 export interface UseModalResult {
@@ -7,7 +6,7 @@ export interface UseModalResult {
   closeModal: () => void;
 }
 
-const useModal = () => {
+export function useModal() {
   const [on, toggle] = useToggle(false);
 
   const openModal = () => {
@@ -23,6 +22,4 @@ const useModal = () => {
     visible: on,
     closeModal,
   };
-};
-
-export default useModal;
+}
