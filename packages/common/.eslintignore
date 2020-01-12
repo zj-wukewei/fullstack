@@ -1,0 +1,11 @@
+.cache
+.idea
+.vscode/*
+/typings
+
+/_documents
+/public
+/_build
+/.build
+/tools/webpack
+/src/assets/fonts/**/*.js

@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "dist",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@users/common/*": ["./*"]
+    }
+  },
+  "include": ["src/**/*", "typings/*"],
+  "exclude": ["node_modules", "_dist"]
+}

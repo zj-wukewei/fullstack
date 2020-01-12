@@ -1,0 +1,54 @@
+// 将设置放入此文件中以覆盖默认设置
+{
+  "editor.formatOnType": false,
+  "eslint.autoFixOnSave": true,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    {
+      "language": "typescript",
+      "autoFix": true
+    },
+    {
+      "language": "typescriptreact",
+      "autoFix": true
+    }
+  ],
+  "files.associations": {
+    "*.js": "javascriptreact",
+    "*.jsx": "javascriptreact",
+    ".eslintrc.js": "javascriptreact",
+    ".prettierrc": "plaintext"
+  },
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": false,
+  "workbench.editor.enablePreview": false,
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  "javascript.implicitProjectConfig.experimentalDecorators": true,
+  "editor.tabSize": 2,
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "teeLang.vsprettier"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "teeLang.vsprettier"
+  },
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "[less]": {
+    "editor.defaultFormatter": "teeLang.vsprettier"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "teeLang.vsprettier"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": false
+  },
+  "[json]": {
+    "editor.defaultFormatter": "teeLang.vsprettier"
+  },
+  // "[typescriptreact]": {
+  //   "editor.defaultFormatter": "esbenp.prettier-vscode"
+  // }
+}
