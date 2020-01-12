@@ -19,7 +19,10 @@ export class User {
   )
   info?: UserInfo;
 
-  @ManyToMany(() => Role)
+  @ManyToMany(
+    () => Role,
+    role => role.user,
+  )
   @JoinTable()
   roles?: Role[];
 

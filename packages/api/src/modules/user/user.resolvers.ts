@@ -25,10 +25,9 @@ export class UsersResolvers {
     return this.userService.users(args);
   }
 
-  @Query(() => AuthUser)
-  async user(@Args({ name: 'id', type: () => Int }) id: number): Promise<AuthUser> {
-    const userEntity = await this.userService.findOneById(id);
-    return userUtil.userTramsforAuthUser(userEntity);
+  @Query(() => User)
+  async user(@Args({ name: 'id', type: () => Int }) id: number): Promise<UserEntity | undefined> {
+    return this.userService.findOneById(id);
   }
 
   @Query(() => AuthUser)

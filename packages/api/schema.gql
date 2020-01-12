@@ -65,7 +65,7 @@ type PermissionsPagination {
 
 type Query {
   users(ps: Int!, pn: Int!): UsersPagination!
-  user(id: Int!): AuthUser!
+  user(id: Int!): User!
   whoAmI: AuthUser!
   roles(ps: Int!, pn: Int!): RolesPagination!
   role(id: Int!): Role!
