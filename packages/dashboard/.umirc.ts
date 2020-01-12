@@ -19,9 +19,9 @@ const config: IConfig = {
           routes: [
             { path: '/home', component: './home/index', exact: true },
             { path: '/users', component: './users/index', exact: true },
-            // { path: '/users/info/:id', component: './users/info/$id.js', exact: true },
+            { path: '/users/info/:id', component: './users/info/$id', exact: true },
             { path: '/roles', component: './roles/index', exact: true },
-            // { path: '/roles/:id', component: './roles/$id/index', exact: true },
+            { path: '/roles/:id', component: './roles/$id/index', exact: true },
             { path: '/permissions', component: './permissions/index', exact: true },
             { path: '/*', component: './404' },
           ],

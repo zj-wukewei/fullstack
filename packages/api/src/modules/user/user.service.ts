@@ -9,7 +9,7 @@ import { paginate, Pagination } from '../../common/page';
 import { RoleService } from '../role/role.service';
 import { ConfigService } from '../config/config.service';
 import { CustomUserInfoRepository } from './user.info.repository';
-import { errorUtil } from '../../utils';
+import { errorUtil, userUtil } from '../../utils';
 
 @Injectable()
 export class UserService {
@@ -37,11 +37,17 @@ export class UserService {
     return paginate(this.userRepository, { pageNumber: args.pn, pageSize: args.ps }, { order: { createDate: 'DESC' } });
   }
 
-  async findOneById(id: number): Promise<User | undefined> {
-    return this.userRepository.findOne(id, { relations: ['info'] });
+  async findOneById(id: number): Promise<User> {
+    const user = await this.userRepository.findOne(id, { relations: ['info'] });
+    if (!user) {
+      throw new NotFoundException();
+    }
+    return user;
   }
 
-  async updateUserInfo(current: AuthUser, args: UpdateUserInfo): Promise<User> {
+  async updateUserInfo(id: number, args: UpdateUserInfo): Promise<User> {
+    const userEntity = await this.findOneById(id);
+    const current = userUtil.userTramsforAuthUser(userEntity);
     const updateInfo: UserInfo = Object.assign(new UserInfo(), args);
     if (current.info) {
       updateInfo.id = current.info.id;

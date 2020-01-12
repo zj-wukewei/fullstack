@@ -4,6 +4,7 @@ import router from 'umi/router';
 
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
+import { AuthUser } from '@users/common/src/models';
 import { loginOut } from '../utils/apollo';
 import useToggle from '../hooks/useToggle';
 
@@ -38,7 +39,9 @@ interface BasicLayoutProps {
 const BasicLayout: React.FC<BasicLayoutProps> = (props: BasicLayoutProps) => {
   const [collapsed, toggle] = useToggle(false);
 
-  const { loading, data } = useQuery(EXCHANGE_WHOAMI, {
+  const { loading, data } = useQuery<{
+    whoAmI: AuthUser;
+  }>(EXCHANGE_WHOAMI, {
     onCompleted: ({ whoAmI }) => {
       if (!whoAmI.info) {
         router.push(`/users/info/${whoAmI.id}`);

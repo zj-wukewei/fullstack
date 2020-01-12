@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { gql } from 'apollo-boost';
-
+import router from 'umi/router';
 import { UsersPagination, UserInfo } from '@users/common/src/models';
 import { BasePageArgs, NewUserInput } from '@users/common/src/dto';
-import { useQuery, useMutation, useSubscription } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Table, Button, message } from 'antd';
 
 import Authorize, { authorize } from '../../components/authorize';
@@ -127,6 +127,9 @@ const Users = () => {
         columns={columns}
         loading={loading}
         onChange={handleOnChange}
+        onRowClick={record => {
+          router.push(`users/info/${record.id}`);
+        }}
         pagination={{
           total: users.totalSize,
           ...pagination,

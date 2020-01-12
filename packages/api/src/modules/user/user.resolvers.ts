@@ -1,4 +1,5 @@
-import { ParseIntPipe, UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
+import { Int } from 'type-graphql';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { User, UsersPagination, AuthUser } from '@users/common/src/models';
@@ -24,12 +25,10 @@ export class UsersResolvers {
     return this.userService.users(args);
   }
 
-  @Query(() => User)
-  async user(
-    @Args('id', ParseIntPipe)
-    id: number,
-  ): Promise<UserEntity | undefined> {
-    return this.userService.findOneById(id);
+  @Query(() => AuthUser)
+  async user(@Args({ name: 'id', type: () => Int }) id: number): Promise<AuthUser> {
+    const userEntity = await this.userService.findOneById(id);
+    return userUtil.userTramsforAuthUser(userEntity);
   }
 
   @Query(() => AuthUser)
@@ -51,10 +50,10 @@ export class UsersResolvers {
   @Mutation(() => User)
   @UseGuards(GqlAuthGuard)
   async updateUserInfo(
-    @CurrentUser() current: AuthUser,
+    @Args({ name: 'id', type: () => Int }) id: number,
     @Args('updateUserInfo') info: UpdateUserInfo,
   ): Promise<UserEntity> {
-    return this.userService.updateUserInfo(current, info);
+    return this.userService.updateUserInfo(id, info);
   }
 
   @Subscription(() => User)
