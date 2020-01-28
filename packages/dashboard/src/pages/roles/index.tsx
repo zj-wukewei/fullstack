@@ -5,7 +5,7 @@ import router from 'umi/router';
 import { RolesPagination } from '@users/common/src/models';
 import { BasePageArgs, NewRoleInput } from '@users/common/src/dto';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import Authorize, { authorize } from '../../components/authorize';
+import { Authorize, authorize, PageContent } from '../../components';
 import { RolePagePermission } from '../../configs/router';
 import { dataFormat } from '../../utils';
 import { useModal, useTable } from '../../hooks';
@@ -97,7 +97,7 @@ const Roles = () => {
   };
 
   return (
-    <div>
+    <PageContent>
       <Authorize match="ROLE_CREATE">
         <Button type="primary" onClick={() => roleModel.openModal()}>
           添加
@@ -121,7 +121,7 @@ const Roles = () => {
       />
 
       <RoleModal loading={addLoading} {...roleModel} createRole={handleCreateRole} />
-    </div>
+    </PageContent>
   );
 };
 

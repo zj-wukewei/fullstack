@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { Table, Button, message } from 'antd';
 import { PermissionsPagination, Permission } from '@users/common/src/models';
 import { BasePageArgs, NewPermissionInput } from '@users/common/src/dto';
-import { Authorize, authorize, TableColumsDelete } from '../../components';
+import { Authorize, authorize, TableColumsDelete, PageContent } from '../../components';
 import { PermissionPagePermission } from '../../configs/router';
 import { useModal, useTable } from '../../hooks';
 import { dataFormat } from '../../utils';
@@ -121,7 +121,7 @@ const PermissionPage = () => {
   };
 
   return (
-    <div>
+    <PageContent>
       <Authorize match="PERMISSION_CREATE">
         <Button type="primary" onClick={() => permissionModel.openModal()}>
           添加
@@ -142,7 +142,7 @@ const PermissionPage = () => {
       />
 
       <PermissionModal loading={addLoading} {...permissionModel} createPermission={handleCreatePermission} />
-    </div>
+    </PageContent>
   );
 };
 

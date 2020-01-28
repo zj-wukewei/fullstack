@@ -5,8 +5,7 @@ import { UsersPagination, UserInfo } from '@users/common/src/models';
 import { BasePageArgs, NewUserInput } from '@users/common/src/dto';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Table, Button, message } from 'antd';
-
-import Authorize, { authorize } from '../../components/authorize';
+import { Authorize, authorize, PageContent } from '../../components';
 
 import { dataFormat } from '../../utils';
 import UserModal from './components/userModal';
@@ -113,7 +112,7 @@ const Users = () => {
   };
 
   return (
-    <div>
+    <PageContent>
       <Authorize match="USER_CREATE">
         <Button type="primary" onClick={() => userModel.openModal()}>
           添加
@@ -137,7 +136,7 @@ const Users = () => {
       />
 
       <UserModal loading={addLoading} {...userModel} createUser={handleCreateUser} />
-    </div>
+    </PageContent>
   );
 };
 

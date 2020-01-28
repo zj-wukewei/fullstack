@@ -4,7 +4,7 @@ import router from 'umi/router';
 import { FormComponentProps } from 'antd/es/form';
 import { UpdateUserInfo } from '@users/common/src/dto';
 import { AuthUser } from '@users/common/src/models';
-
+import { PageContent } from '../../../components';
 import { gql } from 'apollo-boost';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { IPageProps } from '../../../interfaces';
@@ -97,7 +97,7 @@ const UserInfoPage: React.SFC<UserInfoProps> = props => {
   };
 
   return (
-    <>
+    <PageContent>
       <span>个人信息更新:</span>
 
       <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'row' }}>
@@ -127,7 +127,7 @@ const UserInfoPage: React.SFC<UserInfoProps> = props => {
           </Form.Item>
         </Form>
       </div>
-    </>
+    </PageContent>
   );
 };
 

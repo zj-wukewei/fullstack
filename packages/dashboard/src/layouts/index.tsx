@@ -74,8 +74,8 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props: BasicLayoutProps) => {
               <div className="user-info">{data && data.whoAmI && data.whoAmI.info && data.whoAmI.info.name}</div>
             </Dropdown>
           </Header>
-          <Content style={{ padding: '10px' }}>
-            <div style={{ background: '#fff', padding: 24, borderRadius: '4px' }}>{props.children}</div>
+          <Content style={{padding: '10px'}}>
+           {props.children}
           </Content>
         </Layout>
       </Layout>
