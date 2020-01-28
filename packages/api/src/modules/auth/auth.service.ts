@@ -22,6 +22,7 @@ export class AuthService {
     const payload: AuthUser = { ...userUtil.userTramsforAuthUser(user) };
     return {
       accessToken: this.jwtService.sign(payload),
+      uId: user.id,
     };
   }
 }

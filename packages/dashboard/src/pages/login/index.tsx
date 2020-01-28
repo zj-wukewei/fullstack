@@ -12,6 +12,7 @@ const LOGIN_APP = gql`
   mutation login($phone: String!, $password: String!) {
     login(phone: $phone, password: $password) {
       accessToken
+      uId
     }
   }
 `;
@@ -24,13 +25,12 @@ const Login = () => {
     LoginArgs
   >(LOGIN_APP, {
     onCompleted({ login }) {
-      loginIn(login.accessToken);
+      loginIn(login);
       router.push('/home');
     },
   });
 
   const handleOnSubmit = (args: LoginArgs) => {
-    console.log(args);
     submitLoginMutation({ variables: args });
   };
 

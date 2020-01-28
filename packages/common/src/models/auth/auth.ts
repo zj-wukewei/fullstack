@@ -4,4 +4,7 @@ import { Field, ObjectType } from 'type-graphql';
 export class Auth {
   @Field()
   accessToken!: string;
+
+  @Field()
+  uId!: number;
 }

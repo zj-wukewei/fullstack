@@ -5,6 +5,7 @@
 
 type Auth {
   accessToken: String!
+  uId: Float!
 }
 
 type AuthUser {

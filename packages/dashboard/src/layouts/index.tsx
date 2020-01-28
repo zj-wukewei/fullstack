@@ -63,7 +63,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props: BasicLayoutProps) => {
         <LayoutSider
           collapsed={collapsed}
           match={props.match}
-          permission={data && data && data.whoAmI && data.whoAmI.permission}
+          permission={data && data.whoAmI && data.whoAmI.permission}
         />
 
         <Layout className="layout">

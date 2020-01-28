@@ -1,6 +1,8 @@
 import { ApolloClient } from 'apollo-client';
 import { createHttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
+import { Auth } from '@users/common/src/models';
+
 import { split } from 'apollo-link';
 import { getMainDefinition } from 'apollo-utilities';
 import { setContext } from 'apollo-link-context';
@@ -11,6 +13,9 @@ import gql from 'graphql-tag';
 import { message as antdMessage } from 'antd';
 
 const cache = new InMemoryCache();
+
+const TOKEN_KEY = 'token';
+const USER_ID_KEY = 'uId';
 
 cache.writeData({
   data: {
@@ -41,7 +46,7 @@ const link = split(
 
 const loginOut = () => {
   cache.reset().then(() => {
-    localStorage.setItem('token', '');
+    localStorage.setItem(TOKEN_KEY, '');
     cache.writeData({ data: { isLoggedIn: false } });
     router.push('/login');
   });
@@ -62,7 +67,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem(TOKEN_KEY);
   return {
     headers: {
       ...headers,
@@ -84,8 +89,9 @@ const client = new ApolloClient({
   typeDefs,
 });
 
-const loginIn = (token: string) => {
-  localStorage.setItem('token', token);
+const loginIn = (user: Auth) => {
+  localStorage.setItem(TOKEN_KEY, user.accessToken);
+  localStorage.setItem(USER_ID_KEY, String(user.uId));
   client.writeData({ data: { isLoggedIn: true } });
 };
 
