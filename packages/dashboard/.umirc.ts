@@ -43,6 +43,9 @@ const config: IConfig = {
         routes: {
           exclude: [/components\//],
         },
+         locale: {
+          default: 'zh-CN', //默认语言 zh-CN
+        },
       },
     ],
   ],
