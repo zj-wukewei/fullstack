@@ -24,7 +24,7 @@
     "@nestjs/graphql": "^6.5.3",
     "@nestjs/jwt": "^6.1.1",
     "@nestjs/passport": "^6.1.0",
-    "@nestjs/platform-express": "^6.11.0",
+    "@nestjs/platform-express": "^9.2.1",
     "@nestjs/typeorm": "^6.2.0",
     "apollo-server-express": "^2.9.9",
     "class-transformer": "^0.2.3",
